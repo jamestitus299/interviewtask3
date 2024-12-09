@@ -1,4 +1,4 @@
-# Code Generation App
+# Code Generation App Screening Assignment
 
 ## Overview
 This is a screening assignment for our developer position. The task involves building a web application that converts natural language descriptions into visual components using LLM-generated code.

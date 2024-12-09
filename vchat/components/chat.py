@@ -87,7 +87,7 @@ def action_bar() -> rx.Component:
                     ),
                     is_disabled=State.processing,
                 ),
-                on_submit=State.process_question,
+                on_submit=State.genai_process_question,
                 reset_on_submit=True,
             ),
             rx.text(

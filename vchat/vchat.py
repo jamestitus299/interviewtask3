@@ -26,7 +26,7 @@ create_db()
 app = rx.App(
     theme=rx.theme(
         appearance="dark",
-        accent_color="violet",
+        accent_color="teal",
     ),
 )
 app.add_page(index)

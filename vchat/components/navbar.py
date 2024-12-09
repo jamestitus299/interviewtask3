@@ -81,32 +81,23 @@ def navbar():
     return rx.box(
         rx.hstack(
             rx.hstack(
-                rx.avatar(fallback="RC", variant="solid"),
-                rx.heading("Reflex Chat"),
+                rx.avatar(fallback="GC", variant="solid"),
+                rx.heading("Gen Component"),
                 rx.desktop_only(
                     rx.badge(
                     State.current_chat,
-                    rx.tooltip(rx.icon("info", size=14), content="The current selected chat."),
+                    rx.tooltip(rx.icon("zap", size=14), content="The current selected chat."),
                     variant="soft"
                     )
                 ),
                 align_items="center",
             ),
             rx.hstack(
-                # modal(rx.button("+ New chat")),
+                modal(rx.button("+ New chat")),
                 sidebar(
                     rx.button(
                         rx.icon(
                             tag="messages-square",
-                            color=rx.color("mauve", 12),
-                        ),
-                        background_color=rx.color("mauve", 6),
-                    )
-                ),
-                rx.desktop_only(
-                    rx.button(
-                        rx.icon(
-                            tag="sliders-horizontal",
                             color=rx.color("mauve", 12),
                         ),
                         background_color=rx.color("mauve", 6),

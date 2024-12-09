@@ -67,7 +67,7 @@ def action_bar() -> rx.Component:
                         rx.input(
                             rx.input.slot(
                                 rx.tooltip(
-                                    rx.icon("info", size=18),
+                                    rx.icon("zap", size=18),
                                     content="Enter a question to get a response.",
                                 )
                             ),

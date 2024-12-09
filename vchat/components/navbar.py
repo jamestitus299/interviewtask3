@@ -93,7 +93,7 @@ def navbar():
                 align_items="center",
             ),
             rx.hstack(
-                modal(rx.button("+ New chat")),
+                # modal(rx.button("+ New chat")),
                 sidebar(
                     rx.button(
                         rx.icon(

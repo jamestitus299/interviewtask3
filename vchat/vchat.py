@@ -4,7 +4,7 @@ import reflex as rx
 import reflex_chakra as rc
 from vchat.components import chat, navbar
 
-from db.db_tables import create_db
+from vchat.db.db_tables import create_db
 
 def index() -> rx.Component:
     """The main app."""

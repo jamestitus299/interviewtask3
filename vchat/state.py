@@ -1,6 +1,10 @@
 import os
 import reflex as rx
 import google.generativeai as genai
+from dotenv import load_dotenv
+from vchat.utils.utils_functions import make_question
+
+load_dotenv()
 
 # Checking if the API key is set properly
 if not os.getenv("GEMINI_API_KEY"):
@@ -12,7 +16,8 @@ class QA(rx.Base):
     """A question and answer pair."""
     question: str
     answer: str
-    processing : bool = False
+    code : bool
+    processing : bool
 
 
 CHATS = {
@@ -80,8 +85,10 @@ class State(rx.State):
         if question == "":
             return
         
+        prompt = make_question(question)
+        
         # Add the question to the list of questions.
-        qa = QA(question=question, answer="", processing=False)
+        qa = QA(question=question, answer="", code=len(question)==len(prompt), processing=False)
         self.chats[self.current_chat].append(qa)
 
         # # Clear the input and start the processing.
@@ -92,11 +99,12 @@ class State(rx.State):
         try: 
             # 
             model = genai.GenerativeModel('gemini-1.5-flash')
-            response = model.generate_content(question)
+            response = model.generate_content(prompt)
             answer = response.text
+            print(question)
+            print(answer)
             # # Ensure answer is not None before concatenation
             if answer is not None:
-                # print(answer)
                 # self.chats[self.current_chat][-1].answer = answer
                 pass
             else:

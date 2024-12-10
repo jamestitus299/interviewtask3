@@ -6,7 +6,8 @@ from vchat.state import QA, State
 from vchat.components import reactcomponentcanvas
 
 
-message_style = dict(display="inline-block", padding="1em", border_radius="8px", max_width=["30em", "30em", "50em", "50em", "50em", "50em"])
+message_style = dict(display="inline-block", padding="1em", border_radius="8px",
+                     max_width=["30em", "30em", "50em", "50em", "50em", "50em"])
 
 
 def message(qa: QA) -> rx.Component:
@@ -20,7 +21,7 @@ def message(qa: QA) -> rx.Component:
     """
     return rx.box(
         rx.box(
-            
+
             rx.markdown(
                 qa.question,
                 background_color=rx.color("mauve", 4),
@@ -31,37 +32,40 @@ def message(qa: QA) -> rx.Component:
             margin_top="1em",
         ),
         rx.box(
-                rx.container(
+            rx.container(
+                rx.cond(
+                    qa.processing,
+                    rx.button(
+                        rx.spinner(loading=True), "Generating", disabled=True
+                    ),
                     rx.cond(
-                        qa.processing,
-                        rx.button(
-                            rx.spinner(loading=True), "Generating", disabled=True
-                        ),
+                        qa.code,
                         rx.popover.root(
-                        rx.popover.trigger(
-                            rx.button("View Component"),
-                        ),
-                        rx.popover.content(
-                            rx.flex(
-                                # rx.text(qa.answer),
-                                reactcomponentcanvas.show_component(),
-                                rx.popover.close(
-                                    rx.button("Close"),
-                                ),
-                                id="reactcanvas",
-                                direction="column",
-                                spacing="3",
+                            rx.popover.trigger(
+                                rx.button("View Component"),
+                            ),
+                            rx.popover.content(
+                                rx.flex(
+                                    # rx.text(qa.answer),
+                                    reactcomponentcanvas.show_component(),
+                                    rx.popover.close(
+                                        rx.button("Close"),
+                                    ),
+                                    id="reactcanvas",
+                                    direction="column",
+                                    spacing="3",
                                 ),
                             ),
                         ),
-                    ),
-                    rx.markdown(
-                        qa.answer,
-                        **message_style,
-                    ),
-                    background_color=rx.color("accent", 4),
-                    color=rx.color("accent", 12),
+                    )
                 ),
+                rx.markdown(
+                    qa.answer,
+                    **message_style,
+                ),
+                background_color=rx.color("accent", 4),
+                color=rx.color("accent", 12),
+            ),
             text_align="left",
             padding_top="1em",
         ),
@@ -72,7 +76,8 @@ def message(qa: QA) -> rx.Component:
 def chat() -> rx.Component:
     """List all the messages in a single conversation."""
     return rx.vstack(
-        rx.box(rx.foreach(State.chats[State.current_chat], message), width="100%"),
+        rx.box(rx.foreach(
+            State.chats[State.current_chat], message), width="100%"),
         py="8",
         flex="1",
         width="100%",
@@ -98,9 +103,11 @@ def action_bar() -> rx.Component:
                                     content="Enter a question to get a response.",
                                 )
                             ),
-                            placeholder="Type something...",
+                            placeholder="Type something like... Give me the react code/component that does...",
                             id="question",
-                            width=["15em", "20em", "45em", "50em", "50em", "50em"],
+                            width=["15em", "20em", "45em",
+                                   "50em", "50em", "50em"],
+                            required=True
                         ),
                         rx.button(
                             rx.cond(
@@ -118,7 +125,7 @@ def action_bar() -> rx.Component:
                 reset_on_submit=True,
             ),
             rx.text(
-                "Gen Component may return factually responses. Use discretion.",
+                "Gen Component is basically purposed to generate React Components, but can also answer other general question. It might return factually wrong responses. User discretion is advised.",
                 text_align="center",
                 font_size=".75em",
                 color=rx.color("mauve", 10),

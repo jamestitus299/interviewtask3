@@ -59,7 +59,7 @@ def modal(trigger) -> rx.Component:
         rx.dialog.content(
             rx.hstack(
                 rx.input(
-                    placeholder="Type something...",
+                    placeholder="Name your conversation...",
                     on_blur=State.set_new_chat_name,
                     width=["15em", "20em", "30em", "30em", "30em", "30em"],
                 ),
@@ -69,7 +69,6 @@ def modal(trigger) -> rx.Component:
                         on_click=State.create_chat,
                     ),
                 ),
-                background_color=rx.color("mauve", 1),
                 spacing="2",
                 width="100%",
             ),

@@ -1,19 +1,5 @@
 import reflex as rx
 
-# class react_component_canvas(rx.Component):
-#     library = "/public/canvas"
-#     tag = "Canvas"
-
-# canvas = react_component_canvas.create
-
-# def show_component():
-
-#     return rx.box(
-#         rx.heading("james"),
-#         canvas()
-#     )
-
-
 class LiveProvider(rx.Component):
     """React-live component."""
 

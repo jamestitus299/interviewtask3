@@ -47,7 +47,7 @@ def message(qa: QA) -> rx.Component:
                             rx.popover.content(
                                 rx.flex(
                                     # rx.text(qa.answer),
-                                    reactcomponentcanvas.show_component(),
+                                    reactcomponentcanvas.show_live_component(),
                                     rx.popover.close(
                                         rx.button("Close"),
                                     ),

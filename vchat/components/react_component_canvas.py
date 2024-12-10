@@ -66,11 +66,22 @@ error = LiveError.create
 
 class State(rx.State):
     code: str
+    
+    # def update_code(self, code:str):
+    #     self.code = code
 
 
 # Use the component in your app.
-def show_live_component():
+def show_live_component(code: str):
+    """
+        Renders a live preview, editable component of a react/html component
+    args:
+        code (str) : the code to be rendered as a string
+    Returns:
+        container
+    """
+    # State.update_code(code)
     return rx.container(
         rx.heading("React component"),
-        reactcanvas(preview(), editable(), error(), code=State.code)
+        reactcanvas(preview(), editable(), error(), code=code)
     )

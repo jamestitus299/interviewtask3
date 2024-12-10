@@ -33,35 +33,40 @@ def message(qa: QA) -> rx.Component:
         ),
         rx.box(
             rx.container(
-                rx.cond(
-                    qa.processing,
-                    rx.button(
-                        rx.spinner(loading=True), "Generating", disabled=True
-                    ),
-                    rx.cond(
-                        qa.code,
-                        rx.popover.root(
-                            rx.popover.trigger(
-                                rx.button("View Component"),
-                            ),
-                            rx.popover.content(
-                                rx.flex(
-                                    # rx.text(qa.answer),
-                                    react_component_canvas.show_live_component(),
-                                    rx.popover.close(
-                                        rx.button("Close"),
-                                    ),
-                                    id="reactcanvas",
-                                    direction="column",
-                                    spacing="3",
-                                ),
+                rx.hstack(
+                    rx.box(
+                        rx.cond(
+                            qa.processing,
+                            rx.button(
+                                rx.spinner(loading=True), "Generating", disabled=True
                             ),
                         ),
-                    )
-                ),
-                rx.markdown(
-                    qa.answer,
-                    **message_style,
+                        rx.markdown(
+                            qa.answer,
+                            **message_style,
+                        )
+                    ),
+                    rx.box(
+                        rx.cond(
+                            qa.code,
+                            rx.popover.root(
+                                rx.popover.trigger(
+                                    rx.button("View Component"),
+                                ),
+                                rx.popover.content(
+                                    rx.flex(
+                                        react_component_canvas.show_live_component(
+                                            code="<h1>Edit me!</h1>"),
+                                        rx.popover.close(
+                                            rx.button("Close"),
+                                        ),
+                                        direction="column",
+                                        spacing="9",
+                                    ),
+                                ),
+                            ),
+                        )
+                    ),
                 ),
                 background_color=rx.color("accent", 4),
                 color=rx.color("accent", 12),

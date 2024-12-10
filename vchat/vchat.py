@@ -5,6 +5,7 @@ import reflex_chakra as rc
 from vchat.components import chat, navbar
 
 from vchat.db.db_tables import create_db
+from vchat.utils.genai_LLM import set_LLM_model
 
 def index() -> rx.Component:
     """The main app."""
@@ -21,6 +22,8 @@ def index() -> rx.Component:
 
 # Create database
 create_db()
+# insialize the  LLM model
+set_LLM_model()
 
 # Add state and page to the app.
 app = rx.App(

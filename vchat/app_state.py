@@ -1,22 +1,24 @@
-import os
+from typing import List
 import reflex as rx
-import google.generativeai as genai
-from dotenv import load_dotenv
 from vchat.utils.utils_functions import make_question
+from vchat.utils.genai_LLM import set_LLM_model, get_ans_from_LLM
+# import loggin
 
-load_dotenv()
-
-# Checking if the API key is set properly
-if not os.getenv("GEMINI_API_KEY"):
-    raise Exception("Please set GEMINI_API_KEY environment variable. Follow the setup in the readme")
-
-genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+# import google.generativeai as genai
+# from dotenv import load_dotenv
+# import os
+# load_dotenv()
+# # Checking if the API key is set properly
+# if not os.getenv("GEMINI_API_KEY"):
+#     raise Exception("Please set GEMINI_API_KEY environment variable. Follow the setup in the readme")
+# genai.configure(api_key=os.environ["GEMINI_API_KEY"])
 
 class QA(rx.Base):
-    """A question and answer pair."""
+    """The chat format for transfer between backend and frontend"""
     question: str
-    answer: str
-    code : bool
+    text : str
+    code : str
+    is_code : bool
     processing : bool
 
 
@@ -41,6 +43,8 @@ class State(rx.State):
 
     # The name of the new chat.
     new_chat_name: str = ""
+    
+    api_key: str
 
     def create_chat(self):
         """Create a new chat."""
@@ -80,6 +84,7 @@ class State(rx.State):
         """
 
         question = form_data["question"]
+        # print(question)
 
         # Check if the question is empty
         if question == "":
@@ -91,37 +96,42 @@ class State(rx.State):
         # print(len(prompt))
         
         # Add the question to the list of questions.
-        qa = QA(question=question, answer="", code=True, processing=False)
+        qa = QA(question=question, text=str(), code = str(), is_code=False, processing=False)
         self.chats[self.current_chat].append(qa)
 
-        # # Clear the input and start the processing.
+        # Start the processing. Flags for rendering and animation.
         self.processing = True
         self.chats[self.current_chat][-1].processing = True
         yield
 
         try: 
             # 
-            model = genai.GenerativeModel('gemini-1.5-flash')
-            response = model.generate_content(prompt)
-            answer = response.text
-            # print(question)
-            # print(answer)
+            LLM_response= get_ans_from_LLM(prompt)
+            # print(LLM_response)
+            desc, code = LLM_response
+            # print(desc)
+            # print(code)
             # # Ensure answer is not None before concatenation
-            if answer is not None:
-                # self.chats[self.current_chat][-1].answer = answer
-                pass
+            if desc is not None and code is not None:
+                self.chats[self.current_chat][-1].is_code = True
+                self.chats[self.current_chat][-1].text = desc
+                self.chats[self.current_chat][-1].code = code
+                yield
             else:
                 # Handle the case where answer_text is None, perhaps log it or assign a default value
                 # For example, assigning an empty string if answer_text is None
-                answer = "Could not process your query. Please try again."
+                # answer = "Could not process your query. Please try again."
+                self.chats[self.current_chat][-1].is_code = False
+                self.chats[self.current_chat][-1].text = desc
+                yield
         except Exception as e:
-            print(e)
-            self.chats[self.current_chat][-1].code = False
+            print("ERROR " , e)
+            self.chats[self.current_chat][-1].is_code = False
             answer = "Could not process your query. Try again after some time."
+            self.chats[self.current_chat][-1].text = answer
         finally:
-            self.chats[self.current_chat][-1].answer = answer
-            yield
-                
-        # Toggle the processing flag.
+            pass
+        
+        # Toggle the processing flags.
         self.chats[self.current_chat][-1].processing = False
         self.processing = False

@@ -2,7 +2,7 @@ import reflex as rx
 import reflex_chakra as rc
 
 from vchat.components import loading_icon
-from vchat.state import QA, State
+from vchat.app_state import QA, State
 from vchat.components import react_component_canvas
 
 
@@ -21,7 +21,6 @@ def message(qa: QA) -> rx.Component:
     """
     return rx.box(
         rx.box(
-
             rx.markdown(
                 qa.question,
                 background_color=rx.color("mauve", 4),
@@ -33,35 +32,37 @@ def message(qa: QA) -> rx.Component:
         ),
         rx.box(
             rx.container(
+                rx.cond(
+                    qa.processing,
+                    rx.button(
+                        rx.spinner(loading=True), "Generating", disabled=True
+                    ),
+                ),
                 rx.hstack(
                     rx.box(
-                        rx.cond(
-                            qa.processing,
-                            rx.button(
-                                rx.spinner(loading=True), "Generating", disabled=True
-                            ),
-                        ),
                         rx.markdown(
-                            qa.answer,
+                            qa.text,
                             **message_style,
                         )
                     ),
                     rx.box(
                         rx.cond(
-                            qa.code,
+                            qa.is_code,
                             rx.popover.root(
                                 rx.popover.trigger(
                                     rx.button("View Component"),
                                 ),
                                 rx.popover.content(
-                                    rx.flex(
-                                        react_component_canvas.show_live_component(
-                                            code="<h1>Edit me!</h1>"),
-                                        rx.popover.close(
-                                            rx.button("Close"),
+                                    rx.container(
+                                        rx.flex(
+                                            react_component_canvas.show_live_component(
+                                                code=qa.code),
+                                            rx.popover.close(
+                                                rx.button("Close"),
+                                            ),
+                                            direction="column",
+                                            spacing="9",
                                         ),
-                                        direction="column",
-                                        spacing="9",
                                     ),
                                 ),
                             ),

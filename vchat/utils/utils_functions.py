@@ -1,8 +1,6 @@
-
 from typing import List
 
-
-def check_question(question: str, words: List[str]) -> bool:
+def check_question(question: str, words: List[str]= ["code", "react", "component"]) -> bool:
     """
         Checks if the question contains the word in words
     Args:
@@ -11,6 +9,7 @@ def check_question(question: str, words: List[str]) -> bool:
     Returns:
         bool
     """
+    
     for word in words:
         if word in question:
             return True

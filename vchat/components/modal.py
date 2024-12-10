@@ -1,7 +1,7 @@
 import reflex as rx
 import reflex_chakra as rc
 
-from vchat.state import State
+from vchat.app_state import State
 
 
 def modal() -> rx.Component:

@@ -12,6 +12,7 @@ class QA(rx.Base):
     """A question and answer pair."""
     question: str
     answer: str
+    processing : bool = False
 
 
 CHATS = {
@@ -80,12 +81,12 @@ class State(rx.State):
             return
         
         # Add the question to the list of questions.
-        qa = QA(question=question, answer="")
+        qa = QA(question=question, answer="", processing=False)
         self.chats[self.current_chat].append(qa)
 
-        # Clear the input and start the processing.
+        # # Clear the input and start the processing.
         self.processing = True
-        self.chats[self.current_chat][-1].answer = "Generating..."
+        self.chats[self.current_chat][-1].processing = True
         yield
 
         try: 
@@ -93,21 +94,22 @@ class State(rx.State):
             model = genai.GenerativeModel('gemini-1.5-flash')
             response = model.generate_content(question)
             answer = response.text
-            # print(answer)
             # # Ensure answer is not None before concatenation
             if answer is not None:
-                self.chats[self.current_chat][-1].answer = answer
+                # print(answer)
+                # self.chats[self.current_chat][-1].answer = answer
+                pass
             else:
                 # Handle the case where answer_text is None, perhaps log it or assign a default value
                 # For example, assigning an empty string if answer_text is None
                 answer = "Could not process your query. Please try again."
-                self.chats[self.current_chat][-1].answer = answer
-                self.chats = self.chats
-                yield
         except Exception as e:
             print(e)
-            answer = "Could not process your query. Try again."
-
+            answer = "Could not process your query. Try again after some time."
+        finally:
+            self.chats[self.current_chat][-1].answer = answer
+            yield
                 
         # Toggle the processing flag.
+        self.chats[self.current_chat][-1].processing = False
         self.processing = False

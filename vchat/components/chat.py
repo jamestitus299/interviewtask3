@@ -3,6 +3,7 @@ import reflex_chakra as rc
 
 from vchat.components import loading_icon
 from vchat.state import QA, State
+from vchat.components import reactcomponentcanvas
 
 
 message_style = dict(display="inline-block", padding="1em", border_radius="8px", max_width=["30em", "30em", "50em", "50em", "50em", "50em"])
@@ -31,18 +32,26 @@ def message(qa: QA) -> rx.Component:
         ),
         rx.box(
                 rx.container(
+                    rx.cond(
+                        qa.processing,
+                        rx.button(
+                            rx.spinner(loading=True), "Generating", disabled=True
+                        ),
                         rx.popover.root(
                         rx.popover.trigger(
                             rx.button("View Component"),
                         ),
                         rx.popover.content(
                             rx.flex(
-                                rx.text("Simple Example"),
+                                # rx.text(qa.answer),
+                                reactcomponentcanvas.show_component(),
                                 rx.popover.close(
                                     rx.button("Close"),
                                 ),
+                                id="reactcanvas",
                                 direction="column",
                                 spacing="3",
+                                ),
                             ),
                         ),
                     ),

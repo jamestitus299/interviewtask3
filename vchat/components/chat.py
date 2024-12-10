@@ -38,7 +38,7 @@ def message(qa: QA) -> rx.Component:
                         rx.spinner(loading=True), "Generating", disabled=True
                     ),
                 ),
-                rx.hstack(
+                rx.vstack(
                     rx.box(
                         rx.markdown(
                             qa.text,
@@ -63,6 +63,7 @@ def message(qa: QA) -> rx.Component:
                                             direction="column",
                                             spacing="9",
                                         ),
+                                        size="4"
                                     ),
                                 ),
                             ),

@@ -5,7 +5,7 @@ import anthropic
 import re
 from dotenv import load_dotenv
 
-from vchat.utils.utils_functions import check_question
+from vchat.utils.utils_functions import check_response
 
 api_key = None
 
@@ -46,11 +46,12 @@ def get_desc_code_from_response(text: str) -> List[str]:
     # cleaned_code_snippets = [snippet[6:-3].strip() for snippet in code_snippets]
     code_without_imports = re.sub(r'import.*?;', '', code_snippets[0], flags=re.DOTALL)
     code_without_imports = re.sub(r'```', '', code_snippets[0], flags=re.DOTALL)
+    code_without_imports = re.sub(r'jsx', '', code_snippets[0], flags=re.DOTALL)
     
     
     # Check for valid React component pattern
-    component_pattern = r'const\s+\w+\s*=\s*(\(\)\s*=>|function\s*\(.*?\)\s*{)'
-    component_match = re.search(component_pattern, code_without_imports)
+    # component_pattern = r'const\s+\w+\s*=\s*(\(\)\s*=>|function\s*\(.*?\)\s*{)'
+    # component_match = re.search(component_pattern, code_without_imports)
     
     
     # if not component_match:
@@ -80,7 +81,7 @@ def get_ans_from_LLM_Gemini(prompt: str) -> List[str]:
     model = genai.GenerativeModel('gemini-1.5-flash')
     response = model.generate_content(prompt)
     
-    if not check_question(prompt):
+    if not check_response(response.text):
         val = [response.text, None]
         return val
     desc, code = get_desc_code_from_response(response.text)

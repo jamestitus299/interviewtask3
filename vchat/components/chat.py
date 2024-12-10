@@ -19,6 +19,7 @@ def message(qa: QA) -> rx.Component:
     """
     return rx.box(
         rx.box(
+            
             rx.markdown(
                 qa.question,
                 background_color=rx.color("mauve", 4),
@@ -29,12 +30,29 @@ def message(qa: QA) -> rx.Component:
             margin_top="1em",
         ),
         rx.box(
-            rx.markdown(
-                qa.answer,
-                background_color=rx.color("accent", 4),
-                color=rx.color("accent", 12),
-                **message_style,
-            ),
+                rx.container(
+                        rx.popover.root(
+                        rx.popover.trigger(
+                            rx.button("View Component"),
+                        ),
+                        rx.popover.content(
+                            rx.flex(
+                                rx.text("Simple Example"),
+                                rx.popover.close(
+                                    rx.button("Close"),
+                                ),
+                                direction="column",
+                                spacing="3",
+                            ),
+                        ),
+                    ),
+                    rx.markdown(
+                        qa.answer,
+                        **message_style,
+                    ),
+                    background_color=rx.color("accent", 4),
+                    color=rx.color("accent", 12),
+                ),
             text_align="left",
             padding_top="1em",
         ),

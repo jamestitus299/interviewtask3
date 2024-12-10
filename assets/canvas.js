@@ -1,17 +1,13 @@
 import React from 'react';
+import LiveProvider, { LiveEditor, LiveError, LivePreview } from 'react-live';
 
-const reactcanvas = ({ Component }) => {
-  const isValidComponent = typeof Component === 'function';
-
+const code = `<strong>Hello World!</strong>`;
+export function Canvas() {
   return (
-    <div>
-      {isValidComponent ? (
-        <Component />
-      ) : (
-        <p>Invalid Component. Can not render Component.</p>
-      )}
-    </div>
+    <LiveProvider code={code}>
+      <LiveEditor />
+      <LiveError />
+      <LivePreview />
+    </LiveProvider>
   );
 };
-
-export default reactcanvas;

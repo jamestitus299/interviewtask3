@@ -85,10 +85,13 @@ class State(rx.State):
         if question == "":
             return
         
-        prompt = make_question(question)
+        prompt = question
+        # prompt = make_question(question)
+        # print(len(question))
+        # print(len(prompt))
         
         # Add the question to the list of questions.
-        qa = QA(question=question, answer="", code=len(question)==len(prompt), processing=False)
+        qa = QA(question=question, answer="", code=True, processing=False)
         self.chats[self.current_chat].append(qa)
 
         # # Clear the input and start the processing.
@@ -101,8 +104,8 @@ class State(rx.State):
             model = genai.GenerativeModel('gemini-1.5-flash')
             response = model.generate_content(prompt)
             answer = response.text
-            print(question)
-            print(answer)
+            # print(question)
+            # print(answer)
             # # Ensure answer is not None before concatenation
             if answer is not None:
                 # self.chats[self.current_chat][-1].answer = answer
@@ -113,6 +116,7 @@ class State(rx.State):
                 answer = "Could not process your query. Please try again."
         except Exception as e:
             print(e)
+            self.chats[self.current_chat][-1].code = False
             answer = "Could not process your query. Try again after some time."
         finally:
             self.chats[self.current_chat][-1].answer = answer

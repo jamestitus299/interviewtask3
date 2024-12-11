@@ -76,6 +76,13 @@ class ReactRunner(rx.Component):
     # The name of the component to use from the package.
     # LiveProvider, LiveEditor, LiveError, LivePreview
     tag = "Runner"
+    
+class Hello(rx.Component):
+    # Use an absolute path starting with /public
+    library = "/public/hello"
+
+    # Define everything else as normal.
+    tag = "Hello"
 
 
 # Convenience function to create the Spline component.
@@ -84,6 +91,7 @@ preview = LivePreview.create
 editable = LiveEditable.create
 error = LiveError.create
 reactRunner = ReactRunner.create
+hello = Hello.create
 
 
 # class State(rx.State):
@@ -105,6 +113,7 @@ def show_live_component(code: str):
     # State.update_code(code)
     return rx.container(
         rx.heading("React component"),
+        # hello(),
         # reactcanvas(preview(), editable(), error(), code=code)
         reactRunner(code=code)
     )

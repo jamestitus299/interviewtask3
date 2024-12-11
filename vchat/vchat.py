@@ -7,6 +7,7 @@ from vchat.components import chat, navbar
 from vchat.db.db_tables import create_db
 from vchat.utils.genai_LLM import set_LLM_model
 
+
 def index() -> rx.Component:
     """The main app."""
     return rc.vstack(
@@ -20,6 +21,7 @@ def index() -> rx.Component:
         spacing="0",
     )
 
+
 # Create database
 create_db()
 # insialize the  LLM model
@@ -28,8 +30,10 @@ set_LLM_model()
 # Add state and page to the app.
 app = rx.App(
     theme=rx.theme(
-        appearance="dark",
-        accent_color="violet",
-    ),
+        appearance="light", 
+        has_background=True, 
+        radius="large", 
+        accent_color="sky"
+    )
 )
 app.add_page(index)

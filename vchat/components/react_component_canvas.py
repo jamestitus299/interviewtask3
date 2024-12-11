@@ -116,7 +116,7 @@ def show_live_component(code: str):
             reactcanvas(
                 rx.container(
                     rx.heading("Component"),
-                    rx.text_area(code),
+                    # rx.text_area(code),
                     rx.container(
                         preview(),
                         background_color="white",
@@ -130,12 +130,13 @@ def show_live_component(code: str):
                         style={"height": 480, "width": 380},
                     ),
                     error(),
-                    code=code,
                     spacing="2"
                 ),
                 type="always",
                 scrollbars="vertical",
                 style={"height": "auto", "width": "auto"},
+                code=code,
+                scope=None
                 # reactRunner(code=code)
             ),
         ),

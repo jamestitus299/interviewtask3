@@ -53,10 +53,11 @@ def get_desc_code_from_response(text: str) -> List[str]:
 
     # Remove ``` markers from code snippets
     # cleaned_code_snippets = [snippet[6:-3].strip() for snippet in code_snippets]
+    code = code_snippets[0]
+    # code_without_imports = re.sub(
+    #     r'import.*?;', '', code, flags=re.DOTALL)
     code_without_imports = re.sub(
-        r'import.*?;', '', code_snippets[0], flags=re.DOTALL)
-    code_without_imports = re.sub(
-        r'```jsx', '', code_without_imports, flags=re.DOTALL)
+        r'```jsx', '', code, flags=re.DOTALL)
     code_without_imports = re.sub(
         r'```', '', code_without_imports, flags=re.DOTALL)
     code_without_imports = code_without_imports.strip()
@@ -69,16 +70,10 @@ def get_desc_code_from_response(text: str) -> List[str]:
 
     # if not component_match:
     #     raise ValueError('No valid React component found')
-
-    # Transform the code by removing export statement and wrapping in return
-    # transformed_code = code_without_imports.replace('export default MyComponent', '')
-    # transformed_code = re.sub(r'export default.*?;',
-    #                           '', code_without_imports, flags=re.DOTALL)
-
     # print(transformed_code)
-    # final_code = f"return ({transformed_code})"
 
-    val = [description, code_without_imports]
+    # print(code_without_imports)
+    val = [text, code_without_imports]
     return val
 
 

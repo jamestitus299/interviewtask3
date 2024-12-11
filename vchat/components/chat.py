@@ -48,40 +48,18 @@ def message(qa: QA) -> rx.Component:
                     rx.box(
                         rx.cond(
                             qa.is_code,
-                            rx.popover.root(
-                                rx.popover.trigger(
-                                    rx.button("View Component"),
-                                ),
-                                rx.popover.content(
-                                    # rx.scroll_area(
+                            rx.dialog.root(
+                                rx.dialog.trigger(
+                                    rx.button("View Component"),),
+                                rx.dialog.content(
                                     rx.container(
-                                        rx.flex(
-                                            react_component_canvas.show_live_component(
-                                                code=qa.code),
-                                            rx.popover.close(
-                                                rx.button("Close"),
-                                                width="50%"
-                                            ),
-                                            direction="column",
-                                            spacing="3",
-                                            align="center",
-                                            # style={"width": 1440, "height": 960},
-                                        ),
-                                        style={"height": "300px",
-                                               "width": "300px"},
+                                        react_component_canvas.show_live_component(
+                                            code=qa.code),
+                                        min_height="80vh",
+                                        # min_width="80vh"
                                     ),
-                                    # height="600px",
-                                    # width="600px",
-                                    # type="always",
-                                    # scrollbars="vertical",
-                                    # style={"height": "auto", "width": "auto"},
-                                    # )
-
-                                ),
-                                position="absolute",
-                                top="50%",
-                                left="50%",
-                            ),
+                                )
+                            )
                         )
                     ),
                 ),

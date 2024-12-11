@@ -77,6 +77,21 @@ class ReactRunner(rx.Component):
     tag = "Runner"
 
 
+class React(rx.Component):
+    """React-live component."""
+
+    # The name of the npm package.
+    library = "react"
+
+    # Any additional libraries needed to use the component.
+    lib_dependencies: list[str] = []
+
+    is_default = True
+
+    # The name of the component to use from the package.
+    tag = "React"
+
+
 class Hello(rx.Component):
     # Use an absolute path starting with /public
     library = "/public/hello"
@@ -86,6 +101,7 @@ class Hello(rx.Component):
 
 
 # Convenience function to create the Spline component.
+react = React.create
 reactcanvas = LiveProvider.create
 preview = LivePreview.create
 editable = LiveEditable.create
@@ -116,27 +132,30 @@ def show_live_component(code: str):
             reactcanvas(
                 rx.container(
                     rx.heading("Component"),
-                    # rx.text_area(code),
-                    rx.container(
-                        preview(),
-                        background_color="white",
-                        margin="20px",
-                        size="4"
-                    ),
-                    rx.scroll_area(
-                        editable(),
-                        type="always",
-                        scrollbars="both",
-                        style={"height": 480, "width": 380},
+                    rx.vstack(
+                        rx.scroll_area(
+                            editable(),
+                            type="always",
+                            scrollbars="both",
+                            # style={"height": 480, "width": 420},
+                        ),
+                        rx.divider(size="4"),
+                        rx.spacer(),
+                        rx.container(
+                            preview(),
+                            background_color="grey",
+                            # style={"height": 480, "width": 420},
+                        ),
+                        # min_width="60vh"
                     ),
                     error(),
-                    spacing="2"
+                    # spacing="2"
                 ),
                 type="always",
-                scrollbars="vertical",
-                style={"height": "auto", "width": "auto"},
+                scrollbars="both",
                 code=code,
-                scope=None
+                # style={"height": 600, "width": 600},
+                # scope=scope,
                 # reactRunner(code=code)
             ),
         ),

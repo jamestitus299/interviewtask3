@@ -1,7 +1,9 @@
 from typing import List
 
 def check_response(text : str) -> bool:
-    return True
+    if "jsx" in text or "html" in text:
+        return True    
+    return False
 
 def check_question(question: str, words: List[str]= ["code", "react", "component"]) -> bool:
     """

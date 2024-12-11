@@ -7,7 +7,7 @@ class LiveProvider(rx.Component):
     """React-live component."""
 
     # The name of the npm package.
-    library = "react-live@4.1.8"
+    library = "react-live-runner"
 
     # Any additional libraries needed to use the component.
     lib_dependencies: list[str] = []
@@ -26,7 +26,7 @@ class LivePreview(rx.Component):
     """React-live component."""
 
     # The name of the npm package.
-    library = "react-live@4.1.8"
+    library = "react-live-runner"
 
     # Any additional libraries needed to use the component.
     lib_dependencies: list[str] = []
@@ -40,7 +40,7 @@ class LiveEditable(rx.Component):
     """React-live component."""
 
     # The name of the npm package.
-    library = "react-live@4.1.8"
+    library = "react-live-runner"
 
     # Any additional libraries needed to use the component.
     lib_dependencies: list[str] = []
@@ -54,7 +54,7 @@ class LiveError(rx.Component):
     """React-live component."""
 
     # The name of the npm package.
-    library = "react-live@4.1.8"
+    library = "react-live-runner"
 
     # Any additional libraries needed to use the component.
     lib_dependencies: list[str] = []
@@ -62,7 +62,7 @@ class LiveError(rx.Component):
     # The name of the component to use from the package.
     # LiveProvider, LiveEditor, LiveError, LivePreview
     tag = "LiveError"
-    
+
 
 class ReactRunner(rx.Component):
     """React-live component."""
@@ -74,9 +74,9 @@ class ReactRunner(rx.Component):
     lib_dependencies: list[str] = []
 
     # The name of the component to use from the package.
-    # LiveProvider, LiveEditor, LiveError, LivePreview
     tag = "Runner"
-    
+
+
 class Hello(rx.Component):
     # Use an absolute path starting with /public
     library = "/public/hello"
@@ -111,9 +111,30 @@ def show_live_component(code: str):
         container
     """
     # State.update_code(code)
-    return rx.container(
-        rx.heading("React component"),
-        # hello(),
-        # reactcanvas(preview(), editable(), error(), code=code)
-        reactRunner(code=code)
+    return rx.scroll_area(
+        rx.center(
+            reactcanvas(
+                rx.container(
+                    rx.heading("Component"),
+                    rx.container(
+                        preview(),
+                        background_color="var(--gray-3)",
+                        padding="4px"
+                    ),
+                    rx.scroll_area(
+                        editable(),
+                        type="always",
+                        scrollbars="both",
+                        style={"height": 480, "width": 380},
+                    ),
+                    error(),
+                    code=code,
+                    spacing="2"
+                ),
+                type="always",
+                scrollbars="vertical",
+                style={"height": "auto", "width": "auto"},
+                # reactRunner(code=code)
+            ),
+        ),
     )

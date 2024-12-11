@@ -1,8 +1,7 @@
 from typing import List
 import reflex as rx
-from vchat.utils.utils_functions import make_question
-from vchat.utils.genai_LLM import set_LLM_model, get_ans_from_LLM
-# import loggin
+from vchat.utils.genai_LLM import get_ans_from_LLM
+import logging
 
 # import google.generativeai as genai
 # from dotenv import load_dotenv
@@ -128,6 +127,7 @@ class State(rx.State):
                 yield
         except Exception as e:
             print("ERROR " , e)
+            logging.error(e)
             self.chats[self.current_chat][-1].is_code = False
             answer = "Could not process your query. Try again after some time."
             self.chats[self.current_chat][-1].text = answer

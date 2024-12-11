@@ -53,18 +53,29 @@ def message(qa: QA) -> rx.Component:
                                     rx.button("View Component"),
                                 ),
                                 rx.popover.content(
-                                    rx.container(
-                                        rx.flex(
-                                            react_component_canvas.show_live_component(
-                                                code=qa.code),
-                                            rx.popover.close(
-                                                rx.button("Close"),
+                                    # rx.scroll_area(
+                                        rx.container(
+                                            rx.flex(
+                                                react_component_canvas.show_live_component(
+                                                    code=qa.code),
+                                                rx.popover.close(
+                                                    rx.button("Close"),
+                                                    width="50%"
+                                                ),
+                                                direction="column",
+                                                spacing="3",
+                                                align="center",
+                                                # style={"width": 1440, "height": 960},
                                             ),
-                                            direction="column",
-                                            spacing="9",
+                                            style={"height": "auto", "width": "auto"},
                                         ),
-                                        size="4"
-                                    ),
+                                        # height="600px",
+                                        # width="600px",
+                                        # type="always",
+                                        # scrollbars="vertical",
+                                        # style={"height": "auto", "width": "auto"},
+                                    # )
+
                                 ),
                             ),
                         )

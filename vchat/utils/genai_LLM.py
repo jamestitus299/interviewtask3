@@ -88,7 +88,7 @@ def get_ans_from_LLM_Gemini(prompt: str) -> List[str]:
         List[str]: A list of strings. The first value is the text description from the LLM.
         The second value is the code (if any)
     """
-    model = genai.GenerativeModel('gemini-1.5-pro')
+    model = genai.GenerativeModel('gemini-1.5-flash')
     response = model.generate_content(prompt)
 
     if not check_response(response.text):

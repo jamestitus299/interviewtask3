@@ -1,5 +1,5 @@
 import reflex as rx
-from vchat.app_state import State
+from vchat.app_state import app_state
 
 
 def sidebar_chat(chat: str) -> rx.Component:
@@ -10,12 +10,12 @@ def sidebar_chat(chat: str) -> rx.Component:
     """
     return rx.drawer.close(rx.hstack(
         rx.button(
-            chat, on_click=lambda: State.set_chat(chat), width="80%", variant="surface"
+            chat, on_click=lambda: app_state.set_chat(chat), width="80%", variant="surface"
         ),
         rx.button(
             rx.icon(
                 tag="trash",
-                on_click=State.delete_chat,
+                on_click=app_state.delete_chat,
                 stroke_width=1,
             ),
             width="20%",
@@ -36,7 +36,7 @@ def sidebar(trigger) -> rx.Component:
                 rx.vstack(
                     rx.heading("Chats", color=rx.color("mauve", 11)),
                     rx.divider(),
-                    rx.foreach(State.chat_titles,
+                    rx.foreach(app_state.chat_titles,
                                lambda chat: sidebar_chat(chat)),
                     align_items="stretch",
                     width="100%",
@@ -62,13 +62,13 @@ def modal(trigger) -> rx.Component:
             rx.hstack(
                 rx.input(
                     placeholder="Name your conversation...",
-                    on_blur=State.set_new_chat_name,
+                    on_blur=app_state.set_new_chat_name,
                     width=["15em", "20em", "30em", "30em", "30em", "30em"],
                 ),
                 rx.dialog.close(
                     rx.button(
                         "Create chat",
-                        on_click=State.create_chat,
+                        on_click=app_state.create_chat,
                     ),
                 ),
                 spacing="2",
@@ -86,7 +86,7 @@ def navbar():
                 rx.heading("Gen Component"),
                 rx.desktop_only(
                     rx.badge(
-                        State.current_chat,
+                        app_state.current_chat,
                         rx.tooltip(rx.icon("zap", size=14),
                                    content="The current selected chat."),
                         variant="soft"

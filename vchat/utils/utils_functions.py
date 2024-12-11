@@ -1,7 +1,7 @@
 from typing import List
 
 def check_response(text : str) -> bool:
-    if "jsx" in text or "html" in text:
+    if "```jsx" in text or "html" in text:
         return True    
     return False
 

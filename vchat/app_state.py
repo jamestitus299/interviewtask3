@@ -25,7 +25,7 @@ CHATS = {
     "Chats": [],
 }
 
-class State(rx.State):
+class app_state(rx.State):
     """The app state."""
 
     # A dict from the chat name to the list of questions and answers.
@@ -106,14 +106,15 @@ class State(rx.State):
         try: 
             # 
             LLM_response= get_ans_from_LLM(prompt)
-            print("------------------")
-            print(LLM_response)
-            print("------------------")
             desc, code = LLM_response
+            # print("------------------") 
+            # logging.info("-------------")
             # print(desc)
-            # print(code)
+            print("------------------") 
+            print(code)
+            print("------------------") 
             # # Ensure answer is not None before concatenation
-            if desc is not None and code is not None:
+            if code is not None:
                 self.chats[self.current_chat][-1].is_code = True
                 self.chats[self.current_chat][-1].text = desc
                 self.chats[self.current_chat][-1].code = code
@@ -132,7 +133,7 @@ class State(rx.State):
             answer = "Could not process your query. Try again after some time."
             self.chats[self.current_chat][-1].text = answer
         finally:
-            pass
+            yield
         
         # Toggle the processing flags.
         self.chats[self.current_chat][-1].processing = False

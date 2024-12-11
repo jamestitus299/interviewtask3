@@ -2,7 +2,7 @@ import reflex as rx
 import reflex_chakra as rc
 
 from vchat.components import loading_icon
-from vchat.app_state import QA, State
+from vchat.app_state import QA, app_state
 from vchat.components import react_component_canvas
 
 
@@ -95,7 +95,7 @@ def chat() -> rx.Component:
     """List all the messages in a single conversation."""
     return rx.vstack(
         rx.box(rx.foreach(
-            State.chats[State.current_chat], message), width="100%"),
+            app_state.chats[app_state.current_chat], message), width="100%"),
         py="8",
         flex="1",
         width="100%",
@@ -129,17 +129,18 @@ def action_bar() -> rx.Component:
                         ),
                         rx.button(
                             rx.cond(
-                                State.processing,
+                                app_state.processing,
                                 loading_icon(height="1em"),
                                 rx.text("Send"),
                             ),
                             type="submit",
+                            disabled=app_state.processing
                         ),
                         align_items="center",
                     ),
-                    is_disabled=State.processing,
+                    is_disabled=app_state.processing,
                 ),
-                on_submit=State.genai_process_question,
+                on_submit=app_state.genai_process_question,
                 reset_on_submit=True,
             ),
             rx.text(

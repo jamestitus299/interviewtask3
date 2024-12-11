@@ -116,10 +116,12 @@ def show_live_component(code: str):
             reactcanvas(
                 rx.container(
                     rx.heading("Component"),
+                    rx.text_area(code),
                     rx.container(
                         preview(),
-                        background_color="var(--gray-3)",
-                        padding="4px"
+                        background_color="white",
+                        margin="20px",
+                        size="4"
                     ),
                     rx.scroll_area(
                         editable(),

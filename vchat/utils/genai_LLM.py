@@ -25,11 +25,11 @@ def set_LLM_model():
             "Please set GEMINI_API_KEY environment variable. Follow the setup in the readme")
     genai.configure(api_key=os.environ["GEMINI_API_KEY"])
 
-    global api_key, client
-    # api_key=os.environ["CLAUDE_API_KEY"]
-    client = OpenAI(
-        api_key=api_key,
-    )
+    # global api_key, client
+    # # api_key=os.environ["CLAUDE_API_KEY"]
+    # client = OpenAI(
+    #     api_key=api_key,
+    # )
 
 
 def get_desc_code_from_response(text: str) -> List[str]:

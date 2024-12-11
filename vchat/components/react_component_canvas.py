@@ -97,7 +97,7 @@ class Hello(rx.Component):
     library = "/public/hello"
 
     # Define everything else as normal.
-    tag = "Hello"
+    tag = "Example"
 
 
 # Convenience function to create the Spline component.
@@ -126,6 +126,7 @@ def show_live_component(code: str):
     Returns:
         container
     """
+    return hello()
     # State.update_code(code)
     return rx.scroll_area(
         rx.center(
@@ -180,7 +181,7 @@ def show_live_component(code: str):
                                 justify="center",
                                 text_wrap="wrap"
                             ),
-                            rx.spacer(spacing="2"),  
+                            rx.spacer(spacing="2"),
                             rx.container(
                                 preview(),
                                 background_color="white",

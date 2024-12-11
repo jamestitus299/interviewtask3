@@ -1,13 +1,14 @@
 import reflex as rx
 from vchat.app_state import State
 
+
 def sidebar_chat(chat: str) -> rx.Component:
     """A sidebar chat item.
 
     Args:
         chat: The chat item.
     """
-    return  rx.drawer.close(rx.hstack(
+    return rx.drawer.close(rx.hstack(
         rx.button(
             chat, on_click=lambda: State.set_chat(chat), width="80%", variant="surface"
         ),
@@ -35,7 +36,8 @@ def sidebar(trigger) -> rx.Component:
                 rx.vstack(
                     rx.heading("Chats", color=rx.color("mauve", 11)),
                     rx.divider(),
-                    rx.foreach(State.chat_titles, lambda chat: sidebar_chat(chat)),
+                    rx.foreach(State.chat_titles,
+                               lambda chat: sidebar_chat(chat)),
                     align_items="stretch",
                     width="100%",
                 ),
@@ -84,9 +86,10 @@ def navbar():
                 rx.heading("Gen Component"),
                 rx.desktop_only(
                     rx.badge(
-                    State.current_chat,
-                    rx.tooltip(rx.icon("zap", size=14), content="The current selected chat."),
-                    variant="soft"
+                        State.current_chat,
+                        rx.tooltip(rx.icon("zap", size=14),
+                                   content="The current selected chat."),
+                        variant="soft"
                     )
                 ),
                 align_items="center",

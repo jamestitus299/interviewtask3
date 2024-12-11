@@ -96,7 +96,7 @@ class State(rx.State):
         # print(len(prompt))
         
         # Add the question to the list of questions.
-        qa = QA(question=question, text=str(), code = str(), is_code=False, processing=False)
+        qa = QA(question=question, text="", code ="", is_code=False, processing=False)
         self.chats[self.current_chat].append(qa)
 
         # Start the processing. Flags for rendering and animation.
@@ -107,7 +107,9 @@ class State(rx.State):
         try: 
             # 
             LLM_response= get_ans_from_LLM(prompt)
-            # print(LLM_response)
+            print("------------------")
+            print(LLM_response)
+            print("------------------")
             desc, code = LLM_response
             # print(desc)
             # print(code)

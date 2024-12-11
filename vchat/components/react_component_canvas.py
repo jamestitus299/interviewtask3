@@ -131,25 +131,68 @@ def show_live_component(code: str):
         rx.center(
             reactcanvas(
                 rx.container(
-                    rx.heading("Component"),
-                    rx.vstack(
-                        rx.scroll_area(
-                            editable(),
-                            type="always",
-                            scrollbars="both",
-                            # style={"height": 480, "width": 420},
+                    rx.heading("Component", align="center", justify="center"),
+                    # rx.spacer(spacing="8"),
+                    rx.tablet_and_desktop(
+                        rx.hstack(
+                            rx.spacer(spacing="2"),
+                            rx.scroll_area(
+                                editable(),
+                                type="always",
+                                scrollbars="both",
+                                margin="2",
+                                style={"height": "50vh", "width": "40vh"},
+                            ),
+                            rx.spacer(spacing="2"),
+                            rx.container(
+                                preview(),
+                                background_color="white",
+                                margin="2",
+                                style={"height": "50vh", "width": "40vh"},
+                            ),
+                            justify="center",
+                            align="center",
+                            # min_width="60vh"
                         ),
-                        rx.divider(size="4"),
-                        rx.spacer(),
-                        rx.container(
-                            preview(),
-                            background_color="grey",
-                            # style={"height": 480, "width": 420},
+                        # rx.spacer(spacing="2"),
+                        rx.text(
+                            error(),
+                            color_scheme="red",
+                            align="center",
+                            justify="center"
                         ),
-                        # min_width="60vh"
                     ),
-                    error(),
-                    # spacing="2"
+                    rx.mobile_only(
+                        rx.vstack(
+                            rx.spacer(spacing="2"),
+                            rx.scroll_area(
+                                editable(),
+                                type="always",
+                                scrollbars="both",
+                                margin="2",
+                                style={"height": "35vh", "width": "25vh"},
+                            ),
+                            rx.spacer(spacing="2"),
+                            rx.text(
+                                error(),
+                                color_scheme="red",
+                                align="center",
+                                justify="center",
+                                text_wrap="wrap"
+                            ),
+                            rx.spacer(spacing="2"),  
+                            rx.container(
+                                preview(),
+                                background_color="white",
+                                margin="2",
+                                style={"height": "35vh", "width": "25vh"},
+                            ),
+                            justify="center",
+                            align="center",
+                            # min_width="60vh"
+                        ),
+                        # rx.spacer(spacing="2"),
+                    ),
                 ),
                 type="always",
                 scrollbars="both",

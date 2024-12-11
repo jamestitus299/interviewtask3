@@ -55,8 +55,16 @@ def message(qa: QA) -> rx.Component:
                                     rx.container(
                                         react_component_canvas.show_live_component(
                                             code=qa.code),
-                                        min_height="80vh",
-                                        # min_width="80vh"
+                                    ),
+                                    min_height=rx.breakpoints(
+                                        initial="30vh",
+                                        sm="25vh",
+                                        lg="70vh",
+                                    ),
+                                    min_width=rx.breakpoints(
+                                        initial="15vh",
+                                        sm="10vh",
+                                        lg="98vh",
                                     ),
                                 )
                             )

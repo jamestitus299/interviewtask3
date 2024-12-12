@@ -9,9 +9,9 @@ from vchat.components import react_component_canvas
 message_style = dict(
     display="inline-block",
     padding=rx.breakpoints(
-        initial="0.5em",
-        sm="0.2em",
-        lg="0.5em",
+        initial="1em",
+        sm=".2em",
+        lg="1em",
     ),
     border_radius="8px",
     max_width=["30em", "25em", "30em", "40em", "50em", "50em"],
@@ -52,8 +52,16 @@ def message(qa: QA) -> rx.Component:
                         ),
                         text_align="left",
                         margin_top="1em",
-                        margin_bottom="2em",
-                        **message_style,
+                        margin_bottom="1em",
+                        # **message_style,
+                        # border_radius="12px",
+                        max_width=rx.breakpoints(
+                            initial="100%",
+                            xs="15%",
+                            sm="50%",
+                            md="80%",
+                            lg="100%",
+                        ),
                     ),
                     rx.box(
                         rx.cond(
@@ -61,6 +69,7 @@ def message(qa: QA) -> rx.Component:
                             rx.dialog.root(
                                 rx.dialog.trigger(
                                     rx.button("View Component"),
+                                    margin_bottom="1em",
                                 ),
                                 rx.dialog.content(
                                     rx.container(
@@ -160,7 +169,7 @@ def action_bar() -> rx.Component:
                 "Component Genie is basically purposed to generate React/html Components, but can also answer other general question. It might return factually wrong responses. User discretion is advised.",
                 text_align="center",
                 font_size=rx.breakpoints(
-                    initial=".75em", xs=".6em", sm=".8em", lg=".75em"
+                    initial=".75em", xs=".6em", sm=".6em", lg=".75em"
                 ),
                 color=rx.color("mauve", 10),
             ),

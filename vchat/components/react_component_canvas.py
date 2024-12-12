@@ -207,8 +207,6 @@ def show_live_component(code: str):
     # return react()
     # State.update_code(code)
     return rx.scroll_area(
-        # rx.script(src="https://unpkg.com/react@18/umd/react.development.js"),
-        # rx.script(src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"),
         rx.center(
             reactcanvas(
                 rx.script(src="https://unpkg.com/react@18/umd/react.development.js"),

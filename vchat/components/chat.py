@@ -8,9 +8,13 @@ from vchat.components import react_component_canvas
 
 message_style = dict(
     display="inline-block",
-    padding="1em",
+    padding=rx.breakpoints(
+        initial="0.5em",
+        sm="0.2em",
+        lg="0.5em",
+    ),
     border_radius="8px",
-    max_width=["30em", "30em", "50em", "50em", "50em", "50em"],
+    max_width=["30em", "25em", "30em", "40em", "50em", "50em"],
 )
 
 
@@ -45,8 +49,11 @@ def message(qa: QA) -> rx.Component:
                     rx.box(
                         rx.markdown(
                             qa.text,
-                            **message_style,
-                        )
+                        ),
+                        text_align="left",
+                        margin_top="1em",
+                        margin_bottom="2em",
+                        **message_style,
                     ),
                     rx.box(
                         rx.cond(

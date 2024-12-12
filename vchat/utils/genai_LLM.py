@@ -7,7 +7,12 @@ import re
 from dotenv import load_dotenv
 
 from vchat.utils.clean_html import remove_html_head, get_html_body
-from vchat.utils.utils_functions import check_prompt_is_for_html, check_prompt_is_for_react, check_text_for_html, check_text_for_jsx
+from vchat.utils.utils_functions import (
+    check_prompt_is_for_html,
+    check_prompt_is_for_react,
+    check_text_for_html,
+    check_text_for_jsx,
+)
 
 api_key = None
 client = None
@@ -23,7 +28,8 @@ def set_LLM_model():
     # Checking if the API key is set properly
     if not os.getenv("GEMINI_API_KEY"):
         raise Exception(
-            "Please set GEMINI_API_KEY environment variable. Follow the setup in the readme")
+            "Please set GEMINI_API_KEY environment variable. Follow the setup in the readme"
+        )
     genai.configure(api_key=os.environ["GEMINI_API_KEY"])
 
     # global api_key, client
@@ -55,14 +61,14 @@ def get_desc_code_from_response(text: str) -> List[str]:
     # Remove ``` markers from code snippets
     # cleaned_code_snippets = [snippet[6:-3].strip() for snippet in code_snippets]
     code = code_snippets[0]
-    
+
     if check_text_for_html(code):
         # code = remove_html_head(code)
         code = get_html_body(code)
         code = code.strip()
-        code = re.sub(r'<!.*?-->', '', code, flags=re.DOTALL)
-        code = re.sub(r'<body>', '<div class="container p-4">', code, flags=re.DOTALL)
-        code = re.sub(r'</body>', '</div>', code, flags=re.DOTALL)            
+        code = re.sub(r"<!.*?-->", "", code, flags=re.DOTALL)
+        code = re.sub(r"<body>", '<div class="container p-4">', code, flags=re.DOTALL)
+        code = re.sub(r"</body>", "</div>", code, flags=re.DOTALL)
         # code = re.sub(r'<!--.*?-->|/\*.*?\*/|//.*?$', '', code, flags=re.DOTALL | re.MULTILINE)
         # code = re.sub(r'html', '', code, flags=re.DOTALL)
         # print("----Html code-----------")
@@ -70,7 +76,6 @@ def get_desc_code_from_response(text: str) -> List[str]:
         val = [text, code]
         return val
 
-        
     # code_without_imports = re.sub(
     #     r'import.*?;', '', code, flags=re.DOTALL)
     # code_without_imports = re.sub(
@@ -115,18 +120,18 @@ def get_ans_from_LLM_Gemini(prompt: str) -> List[str]:
     """
     if check_prompt_is_for_html(prompt):
         prompt += ". Give full html with head and body and the styling should be in bootstrap css only."
-        
+
     if check_prompt_is_for_react(prompt):
-        prompt += ". the styling should be in bootstrap css only" 
-    
-    model = genai.GenerativeModel('gemini-1.5-flash')
+        prompt += ". the styling should be in bootstrap css only"
+
+    model = genai.GenerativeModel("gemini-1.5-flash")
     response = model.generate_content(prompt)
     response = response.text
 
     if not check_text_for_html(response) and not check_prompt_is_for_react(response):
         val = [response, None]
         return val
-    
+
     desc, code = get_desc_code_from_response(response)
     # print(desc)
     # print("---------")
@@ -143,9 +148,7 @@ def get_ans_from_LLM_Anthropic(prompt: str) -> List[str]:
     message = client.messages.create(
         model="claude-3-5-sonnet-20241022",
         max_tokens=1024,
-        messages=[
-            {"role": "user", "content": prompt}
-        ]
+        messages=[{"role": "user", "content": prompt}],
     )
 
     return message.content
@@ -157,14 +160,17 @@ def chat_with_gpt(prompt):
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",  # Use "gpt-4" if you have access
             messages=[
-                {"role": "system", "content": "You are a code generation of react components with inline css"},
+                {
+                    "role": "system",
+                    "content": "You are a code generation of react components with inline css",
+                },
                 {"role": "user", "content": prompt},
             ],
             # max_tokens=150,  # Adjust the response length as needed
             # temperature=0.7  # Adjust creativity level
         )
         # Extract and return the assistant's reply
-        return response['choices'][0]['message']['content'].strip()
+        return response["choices"][0]["message"]["content"].strip()
     except Exception as e:
         return f"An error occurred: {e}"
 

@@ -1,36 +1,42 @@
 from typing import List
 
+
 def check_prompt_is_for_html(text: str):
     if "html" in text:
         return 1
     return 0
+
 
 def check_prompt_is_for_react(text: str):
     if "react" in text or "code" in text or "component" in text:
         return 1
     return 0
 
+
 def check_text_for_html(text: str):
     if "```html" in text:
-        return 1  
+        return 1
     return 0
 
 
-def check_text_for_jsx(text : str) -> int:
+def check_text_for_jsx(text: str) -> int:
     if "```jsx" in text:
-        return 1  
+        return 1
     return 0
 
-def check_question(question: str, words: List[str]= ["code", "react", "component"]) -> bool:
+
+def check_question(
+    question: str, words: List[str] = ["code", "react", "component"]
+) -> bool:
     """
         Checks if the question contains the word in words
     Args:
         question (str): the string question
-        words (List[str]): words to check for 
+        words (List[str]): words to check for
     Returns:
         bool
     """
-    
+
     for word in words:
         if word in question:
             return True
@@ -39,7 +45,7 @@ def check_question(question: str, words: List[str]= ["code", "react", "component
 
 def make_question(question: str) -> str:
     """
-        Constructs the question based on the prompt (checks if the prompt is to generate a react component or a general question.) 
+        Constructs the question based on the prompt (checks if the prompt is to generate a react component or a general question.)
     Args:
         question (str): the string question
     Returns:

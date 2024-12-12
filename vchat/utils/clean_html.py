@@ -1,8 +1,9 @@
 from bs4 import BeautifulSoup
 
+
 def remove_html_head(html_content):
     # Parse the HTML content
-    soup = BeautifulSoup(html_content, 'html.parser')
+    soup = BeautifulSoup(html_content, "html.parser")
 
     # Find and remove the <head> section
     if soup.head:
@@ -11,9 +12,10 @@ def remove_html_head(html_content):
     # Return the modified HTML
     return str(soup)
 
+
 def get_html_body(html_content):
     # Parse the HTML content
-    soup = BeautifulSoup(html_content, 'html.parser')
+    soup = BeautifulSoup(html_content, "html.parser")
 
     body = soup.body
 

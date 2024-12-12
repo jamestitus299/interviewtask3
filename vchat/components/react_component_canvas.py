@@ -228,23 +228,24 @@ def show_live_component(code: str):
                 # rx.spacer(spacing="8"),
                 rx.desktop_only(
                     rx.hstack(
-                        rx.spacer(spacing="2"),
                         rx.scroll_area(
                             editable(),
-                            background_color="grey",
+                            # background_color="grey",
                             type="always",
                             scrollbars="both",
                             # padding="8",
-                            style={"height": "60vh", "width": "50%"},
+                            style={"height": "60vh", "width": "60vh"},
+                            border_radius="1em",
                         ),
-                        # rx.spacer(spacing="2"),
+                        rx.spacer(spacing="1"),
                         rx.scroll_area(
                             preview(),
                             type="always",
                             scrollbars="both",
                             background_color="white",
                             # padding="6",
-                            style={"height": "60vh", "width": "auto"},
+                            style={"height": "60vh", "width": "60vh"},
+                            border_radius="1em",    
                             # overflow="hidden"
                         ),
                         justify="center",
@@ -258,7 +259,7 @@ def show_live_component(code: str):
                         align="center",
                         justify="center",
                         text_align="center",
-                        margin_top="10px"
+                        margin_top="10px",
                     ),
                     rx.text(
                         error(),
@@ -267,12 +268,12 @@ def show_live_component(code: str):
                         justify="center",
                     ),
                 ),
-                rx.mobile_only(
+                rx.mobile_and_tablet(
                     rx.vstack(
-                        rx.spacer(spacing="2"),
+                        rx.spacer(spacing="1"),
                         rx.scroll_area(
                             preview(),
-                            background_color="grey",
+                            background_color="white",
                             margin="2",
                             style={"height": "35vh", "width": "25vh"},
                         ),
@@ -299,6 +300,7 @@ def show_live_component(code: str):
                             scrollbars="both",
                             margin="2",
                             style={"height": "35vh", "width": "25vh"},
+                            border_radius=".5em",                                
                         ),
                         justify="center",
                         align="center",

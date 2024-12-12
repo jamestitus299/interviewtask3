@@ -1,8 +1,8 @@
-reflex==0.6.6.post2
+reflex>=0.6.6.post2
 reflex-chakra>=0.6.0
 google-generativeai
 SQLAlchemy
 python-dotenv
-
+beautifulsoup4
 anthropic
 openai

@@ -114,7 +114,7 @@ def get_ans_from_LLM_Gemini(prompt: str) -> List[str]:
         The second value is the code (if any)
     """
     if check_prompt_is_for_html(prompt):
-        prompt += ". Give full html with head and body and the styling should be in bootstrap css only, text should be black color."
+        prompt += ". Give full html with head and body and the styling should be in bootstrap css only."
         
     if check_prompt_is_for_react(prompt):
         prompt += ". the styling should be in bootstrap css only" 

@@ -36,7 +36,7 @@ def message(qa: QA) -> rx.Component:
             margin_bottom="1em",
         ),
         rx.box(
-            rx.scroll_area(
+            rx.container(
                 rx.cond(
                     qa.processing,
                     rx.button(rx.spinner(loading=True), "Generating", disabled=True),
@@ -82,13 +82,13 @@ def message(qa: QA) -> rx.Component:
             ),
             # text_align="left",
             # padding_top="1em",
-            # width="auto",
-            width=rx.breakpoints(
-                initial="100%",
-                xs="30%",
-                sm="60%",
-                lg="100%",
-            ),
+            width="auto",
+            # width=rx.breakpoints(
+            #     initial="100%",
+            #     xs="30%",
+            #     sm="60%",
+            #     lg="100%",
+            # ),
         ),
         align="center",
         justify="center",

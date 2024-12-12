@@ -1,9 +1,25 @@
 from typing import List
 
-def check_response(text : str) -> bool:
-    if "```jsx" in text or "html" in text:
-        return True    
-    return False
+def check_prompt_is_for_html(text: str):
+    if "html" in text:
+        return 1
+    return 0
+
+def check_prompt_is_for_react(text: str):
+    if "react" in text or "code" in text or "component" in text:
+        return 1
+    return 0
+
+def check_text_for_html(text: str):
+    if "```html" in text:
+        return 1  
+    return 0
+
+
+def check_text_for_jsx(text : str) -> int:
+    if "```jsx" in text:
+        return 1  
+    return 0
 
 def check_question(question: str, words: List[str]= ["code", "react", "component"]) -> bool:
     """

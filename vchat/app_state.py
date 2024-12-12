@@ -110,9 +110,9 @@ class app_state(rx.State):
             # print("------------------") 
             # logging.info("-------------")
             # print(desc)
-            print("------------------") 
-            print(code)
-            print("------------------") 
+            # print("------------------") 
+            # print(code)
+            # print("------------------") 
             # # Ensure answer is not None before concatenation
             if code is not None:
                 self.chats[self.current_chat][-1].is_code = True

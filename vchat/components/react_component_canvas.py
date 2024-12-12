@@ -3,6 +3,7 @@ from reflex.components.component import NoSSRComponent
 import json
 from typing import Any, Dict, Optional
 
+
 # This is a reflex wrapper of the react-live packgage
 class LiveProvider(rx.NoSSRComponent):
     """React-live component."""
@@ -99,16 +100,16 @@ class React(rx.Component):
 
 #     # Define everything else as normal.
 #     tag = "Example"
-    
+
 # class ContentRenderer(rx.NoSSRComponent):
 #     """A component that renders different types of content."""
-    
+
 #     # Define the library to use
 #     # library = "content-renderer"
-    
+
 #     # # Define the props
 #     # tag = "ContentRenderer"
-    
+
 #     # Define the properties
 #     content: Any
 #     wrapper_class_name: Optional[str] = "p-4"
@@ -123,12 +124,12 @@ class React(rx.Component):
 #                         if (typeof content === "function") {
 #                             return content();
 #                         }
-                        
+
 #                         // If content is a valid React element, render it directly
 #                         if (isValidElement(content)) {
 #                             return content;
 #                         }
-                        
+
 #                         // If content is a string, check if it's HTML
 #                         if (typeof content === "string") {
 #                             if (content.trim().startsWith("<")) {
@@ -142,21 +143,21 @@ class React(rx.Component):
 #                             // For plain strings, render as text
 #                             return <span className="content-text">{content}</span>;
 #                         }
-                        
+
 #                         // Return null for unsupported content types
 #                         return null;
 #                     };
-                    
+
 #                     return <div className={wrapperClassName}>{renderContent()}</div>;
 #                 }"""
-        
+
 # def context_renderer() -> rx.Component:
 #     # HTML string example
 #     html_content = "<h1>Hello World</h1><p>This is <strong>HTML</strong> content</p>"
-    
+
 #     # Code example
 #     code_example = "<h1> James </h1>"
-    
+
 #     return rx.vstack(
 #         rx.heading("Content Renderer Examples", size="2"),
 #         rx.box(
@@ -206,81 +207,99 @@ def show_live_component(code: str):
     # return reactRunner(code=code)
     # return react()
     # State.update_code(code)
-    return rx.scroll_area(
-        rx.center(
-            reactcanvas(
-                rx.script(src="https://unpkg.com/react@18/umd/react.development.js"),
-                rx.script(src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"),
-                rx.container(
-                    rx.heading("Component", align="center", justify="center"),
-                    # rx.spacer(spacing="8"),
-                    rx.tablet_and_desktop(
-                        rx.hstack(
-                            rx.spacer(spacing="2"),
-                            rx.scroll_area(
-                                editable(),
-                                type="always",
-                                scrollbars="both",
-                                margin="2",
-                                style={"height": "50vh", "width": "40vh"},
-                            ),
-                            rx.spacer(spacing="2"),
-                            rx.container(
-                                preview(),
-                                background_color="white",
-                                margin="2",
-                                style={"height": "50vh", "width": "40vh"},
-                            ),
-                            justify="center",
-                            align="center",
-                            # min_width="60vh"
+    return rx.container(
+        # rx.scroll_area(
+        reactcanvas(
+            # rx.script(src="https://unpkg.com/react@18/umd/react.development.js"),
+            # rx.script(src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"),
+            rx.container(
+                rx.heading("Component", 
+                    align="center", 
+                    justify="center",
+                    margin_bottom="10px",
+                ),
+                # rx.spacer(spacing="8"),
+                rx.desktop_only(
+                    rx.hstack(
+                        rx.spacer(spacing="2"),
+                        rx.scroll_area(
+                            editable(),
+                            type="always",
+                            scrollbars="both",
+                            # padding="8",
+                            style={"height": "60vh", "width": "50%"},
                         ),
-                        # rx.spacer(spacing="2"),
+                        rx.spacer(spacing="2"),
+                        rx.scroll_area(
+                            preview(),
+                            type="always",
+                            scrollbars="both",
+                            background_color="white",
+                            # padding="6",
+                            style={"height": "60vh", "width": "auto"},
+                            # overflow="hidden"
+                        ),
+                        justify="center",
+                        align="center",
+                    ),
+                    # rx.spacer(spacing="2"),
+                    rx.text(
+                        error(),
+                        color_scheme="red",
+                        align="center",
+                        justify="center",
+                    ),
+                    rx.button(
+                        "Copy code",
+                        on_click=rx.set_clipboard(code),
+                        size="1",
+                        align="center", 
+                        justify="center",
+                        text_align="center",
+                    ),
+                ),
+                rx.mobile_and_tablet(
+                    rx.vstack(
+                        rx.spacer(spacing="2"),
+                        rx.scroll_area(
+                            preview(),
+                            background_color="grey",
+                            margin="2",
+                            style={"height": "35vh", "width": "25vh"},
+                        ),
+                        rx.spacer(spacing="2"),
                         rx.text(
                             error(),
                             color_scheme="red",
                             align="center",
-                            justify="center"
-                        ),
-                    ),
-                    rx.mobile_only(
-                        rx.vstack(
-                            rx.spacer(spacing="2"),
-                            rx.container(
-                                preview(),
-                                background_color="white",
-                                margin="2",
-                                style={"height": "35vh", "width": "25vh"},
-                            ),
-                            rx.spacer(spacing="2"),
-                            rx.text(
-                                error(),
-                                color_scheme="red",
-                                align="center",
-                                justify="center",
-                                text_wrap="wrap"
-                            ),
-                            rx.spacer(spacing="2"),
-                            rx.scroll_area(
-                                editable(),
-                                type="always",
-                                scrollbars="both",
-                                margin="2",
-                                style={"height": "35vh", "width": "25vh"},
-                            ),
                             justify="center",
-                            align="center",
-                            # min_width="60vh"
+                            text_wrap="wrap",
                         ),
-                        # rx.spacer(spacing="2"),
+                        rx.spacer(spacing="2"),
+                        rx.scroll_area(
+                            editable(),
+                            type="always",
+                            scrollbars="both",
+                            margin="2",
+                            style={"height": "35vh", "width": "25vh"},
+                        ),
+                        justify="center",
+                        align="center",
+                        # min_width="60vh"
                     ),
+                    # rx.spacer(spacing="2"),
                 ),
-                type="always",
-                scrollbars="both",
-                code=code,
-                # style={"height": 600, "width": 600},
-                # scope=react()
-                # reactRunner(code=code)
             ),
+            code=code,
+            # scope=react()
+            # reactRunner(code=code)
         ),
+        #     type="always",
+        #     scrollbars="both",
+        #     style={"height": "100%", "width": "100%"},
+        #     # width="100%",
+        # ),
+        # width="100%",
+        # style={"height": "auto", "width": "auto"},
+        # stack_children_full_width=True,
     )

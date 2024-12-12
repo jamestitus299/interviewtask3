@@ -6,8 +6,12 @@ from vchat.app_state import QA, app_state
 from vchat.components import react_component_canvas
 
 
-message_style = dict(display="inline-block", padding="1em", border_radius="8px",
-                     max_width=["30em", "30em", "50em", "50em", "50em", "50em"])
+message_style = dict(
+    display="inline-block",
+    padding="8px",
+    border_radius="8px",
+    max_width=["30em", "30em", "50em", "50em", "50em", "50em"],
+)
 
 
 def message(qa: QA) -> rx.Component:
@@ -29,14 +33,13 @@ def message(qa: QA) -> rx.Component:
             ),
             text_align="right",
             margin_top="1em",
+            margin_bottom="1em"
         ),
         rx.box(
             rx.container(
                 rx.cond(
                     qa.processing,
-                    rx.button(
-                        rx.spinner(loading=True), "Generating", disabled=True
-                    ),
+                    rx.button(rx.spinner(loading=True), "Generating", disabled=True),
                 ),
                 rx.vstack(
                     rx.box(
@@ -50,24 +53,27 @@ def message(qa: QA) -> rx.Component:
                             qa.is_code,
                             rx.dialog.root(
                                 rx.dialog.trigger(
-                                    rx.button("View Component"),),
+                                    rx.button("View Component"),
+                                ),
                                 rx.dialog.content(
                                     rx.container(
                                         react_component_canvas.show_live_component(
-                                            code=qa.code),
+                                            code=qa.code
+                                        ),
+                                        # style={"height": "90vh", "width": "90vh"},
                                     ),
                                     min_height=rx.breakpoints(
                                         initial="30vh",
                                         sm="25vh",
-                                        lg="70vh",
+                                        lg="40em",
                                     ),
                                     min_width=rx.breakpoints(
                                         initial="15vh",
                                         sm="10vh",
-                                        lg="98vh",
+                                        lg="70em",
                                     ),
-                                )
-                            )
+                                ),
+                            ),
                         )
                     ),
                 ),
@@ -75,8 +81,11 @@ def message(qa: QA) -> rx.Component:
                 color=rx.color("accent", 12),
             ),
             text_align="left",
-            padding_top="1em",
+            # padding_top="1em",
+            width="auto",
         ),
+        align="center",
+        justify="center",
         width="100%",
     )
 
@@ -84,12 +93,13 @@ def message(qa: QA) -> rx.Component:
 def chat() -> rx.Component:
     """List all the messages in a single conversation."""
     return rx.vstack(
-        rx.box(rx.foreach(
-            app_state.chats[app_state.current_chat], message), width="100%"),
+        rx.box(
+            rx.foreach(app_state.chats[app_state.current_chat], message), width="100%"
+        ),
         py="8",
         flex="1",
         width="100%",
-        max_width="50em",
+        max_width="65em",
         padding_x="4px",
         align_self="center",
         overflow="hidden",
@@ -112,10 +122,10 @@ def action_bar() -> rx.Component:
                                 )
                             ),
                             placeholder="Type something like... Give me the react code/component that does...",
+                            text_wrap=True,
                             id="question",
-                            width=["15em", "20em", "45em",
-                                   "50em", "50em", "50em"],
-                            required=True
+                            width=["15em", "20em", "45em", "50em", "50em", "50em"],
+                            required=True,
                         ),
                         rx.button(
                             rx.cond(
@@ -124,7 +134,7 @@ def action_bar() -> rx.Component:
                                 rx.text("Send"),
                             ),
                             type="submit",
-                            disabled=app_state.processing
+                            disabled=app_state.processing,
                         ),
                         align_items="center",
                     ),

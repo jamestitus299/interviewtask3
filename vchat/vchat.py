@@ -24,7 +24,7 @@ def index() -> rx.Component:
 
 
 # Create database
-create_db()
+# create_db()
 # insialize the  LLM model
 set_LLM_model()
 

@@ -11,6 +11,7 @@ from vchat.utils.genai_LLM import set_LLM_model
 def index() -> rx.Component:
     """The main app."""
     return rc.vstack(
+        rx.script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"),
         navbar(),
         chat.chat(),
         chat.action_bar(),
@@ -33,7 +34,13 @@ app = rx.App(
         appearance="dark", 
         has_background=True, 
         radius="large", 
-        accent_color="sky"
-    )
+        accent_color="sky",
+    ),
+    stylesheets=[
+        "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css",
+        "https://cdn.tailwindcss.com",
+    ],
 )
+
 app.add_page(index)
+

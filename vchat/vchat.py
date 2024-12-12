@@ -31,7 +31,7 @@ set_LLM_model()
 # Add state and page to the app.
 app = rx.App(
     theme=rx.theme(
-        appearance="dark", 
+        appearance="light", 
         has_background=True, 
         radius="large", 
         accent_color="sky",

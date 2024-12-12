@@ -8,7 +8,7 @@ from vchat.components import react_component_canvas
 
 message_style = dict(
     display="inline-block",
-    padding="8px",
+    padding="1em",
     border_radius="8px",
     max_width=["30em", "30em", "50em", "50em", "50em", "50em"],
 )
@@ -33,10 +33,10 @@ def message(qa: QA) -> rx.Component:
             ),
             text_align="right",
             margin_top="1em",
-            margin_bottom="1em"
+            margin_bottom="1em",
         ),
         rx.box(
-            rx.container(
+            rx.scroll_area(
                 rx.cond(
                     qa.processing,
                     rx.button(rx.spinner(loading=True), "Generating", disabled=True),
@@ -80,13 +80,18 @@ def message(qa: QA) -> rx.Component:
                 background_color=rx.color("accent", 4),
                 color=rx.color("accent", 12),
             ),
-            text_align="left",
+            # text_align="left",
             # padding_top="1em",
-            width="auto",
+            # width="auto",
+            width=rx.breakpoints(
+                initial="100%",
+                xs="30%",
+                sm="60%",
+                lg="100%",
+            ),
         ),
         align="center",
         justify="center",
-        width="100%",
     )
 
 
@@ -118,10 +123,11 @@ def action_bar() -> rx.Component:
                             rx.input.slot(
                                 rx.tooltip(
                                     rx.icon("zap", size=18),
-                                    content="Enter a question to get a response.",
+                                    # content="Enter a question to get a response.",
                                 )
                             ),
-                            placeholder="Type something like... Give me the react code/component that does...",
+                            size="3",
+                            placeholder="html/react component...",
                             text_wrap=True,
                             id="question",
                             width=["15em", "20em", "45em", "50em", "50em", "50em"],
@@ -144,9 +150,11 @@ def action_bar() -> rx.Component:
                 reset_on_submit=True,
             ),
             rx.text(
-                "Gen Component is basically purposed to generate React Components, but can also answer other general question. It might return factually wrong responses. User discretion is advised.",
+                "Component Genie is basically purposed to generate React/html Components, but can also answer other general question. It might return factually wrong responses. User discretion is advised.",
                 text_align="center",
-                font_size=".75em",
+                font_size=rx.breakpoints(
+                    initial=".75em", xs=".6em", sm=".8em", lg=".75em"
+                ),
                 color=rx.color("mauve", 10),
             ),
             align_items="center",

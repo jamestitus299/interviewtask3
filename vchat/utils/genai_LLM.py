@@ -124,7 +124,7 @@ def get_ans_from_LLM_Gemini(prompt: str) -> List[str]:
     response = response.text
 
     if not check_text_for_html(response) and not check_prompt_is_for_react(response):
-        val = [response.text, None]
+        val = [response, None]
         return val
     
     desc, code = get_desc_code_from_response(response)

@@ -208,13 +208,20 @@ def show_live_component(code: str):
     # return react()
     # State.update_code(code)
     return rx.container(
+        rx.dialog.close(
+            rx.button("Close", size="2"),
+            position="sticky",
+            top="0",
+            left="0",
+        ),
         # rx.scroll_area(
         reactcanvas(
             # rx.script(src="https://unpkg.com/react@18/umd/react.development.js"),
             # rx.script(src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"),
             rx.container(
-                rx.heading("Component", 
-                    align="center", 
+                rx.heading(
+                    "Component",
+                    align="center",
                     justify="center",
                     margin_bottom="10px",
                 ),
@@ -224,12 +231,13 @@ def show_live_component(code: str):
                         rx.spacer(spacing="2"),
                         rx.scroll_area(
                             editable(),
+                            background_color="grey",
                             type="always",
                             scrollbars="both",
                             # padding="8",
                             style={"height": "60vh", "width": "50%"},
                         ),
-                        rx.spacer(spacing="2"),
+                        # rx.spacer(spacing="2"),
                         rx.scroll_area(
                             preview(),
                             type="always",
@@ -243,22 +251,23 @@ def show_live_component(code: str):
                         align="center",
                     ),
                     # rx.spacer(spacing="2"),
+                    rx.button(
+                        "Copy code",
+                        on_click=rx.set_clipboard(code),
+                        size="1",
+                        align="center",
+                        justify="center",
+                        text_align="center",
+                        margin_top="10px"
+                    ),
                     rx.text(
                         error(),
                         color_scheme="red",
                         align="center",
                         justify="center",
                     ),
-                    rx.button(
-                        "Copy code",
-                        on_click=rx.set_clipboard(code),
-                        size="1",
-                        align="center", 
-                        justify="center",
-                        text_align="center",
-                    ),
                 ),
-                rx.mobile_and_tablet(
+                rx.mobile_only(
                     rx.vstack(
                         rx.spacer(spacing="2"),
                         rx.scroll_area(
@@ -266,6 +275,14 @@ def show_live_component(code: str):
                             background_color="grey",
                             margin="2",
                             style={"height": "35vh", "width": "25vh"},
+                        ),
+                        rx.button(
+                            "Copy code",
+                            on_click=rx.set_clipboard(code),
+                            size="1",
+                            align="center",
+                            justify="center",
+                            text_align="center",
                         ),
                         rx.spacer(spacing="2"),
                         rx.text(

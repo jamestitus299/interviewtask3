@@ -8,22 +8,27 @@ def sidebar_chat(chat: str) -> rx.Component:
     Args:
         chat: The chat item.
     """
-    return rx.drawer.close(rx.hstack(
-        rx.button(
-            chat, on_click=lambda: app_state.set_chat(chat), width="80%", variant="surface"
-        ),
-        rx.button(
-            rx.icon(
-                tag="trash",
-                on_click=app_state.delete_chat,
-                stroke_width=1,
+    return rx.drawer.close(
+        rx.hstack(
+            rx.button(
+                chat,
+                on_click=lambda: app_state.set_chat(chat),
+                width="80%",
+                variant="surface",
             ),
-            width="20%",
-            variant="surface",
-            color_scheme="red",
-        ),
-        width="100%",
-    ))
+            rx.button(
+                rx.icon(
+                    tag="trash",
+                    on_click=app_state.delete_chat,
+                    stroke_width=1,
+                ),
+                width="20%",
+                variant="surface",
+                color_scheme="red",
+            ),
+            width="100%",
+        )
+    )
 
 
 def sidebar(trigger) -> rx.Component:
@@ -36,8 +41,7 @@ def sidebar(trigger) -> rx.Component:
                 rx.vstack(
                     rx.heading("Chats", color=rx.color("mauve", 11)),
                     rx.divider(),
-                    rx.foreach(app_state.chat_titles,
-                               lambda chat: sidebar_chat(chat)),
+                    rx.foreach(app_state.chat_titles, lambda chat: sidebar_chat(chat)),
                     align_items="stretch",
                     width="100%",
                 ),
@@ -83,13 +87,20 @@ def navbar():
         rx.hstack(
             rx.hstack(
                 rx.avatar(fallback="GC", variant="solid"),
-                rx.heading("Gen Component"),
+                rx.heading(
+                    "Component Genie",
+                    size=rx.breakpoints(
+                        initial="2", xs="2", sm="4", lg="6"
+                    ),
+                ),
                 rx.desktop_only(
                     rx.badge(
                         app_state.current_chat,
-                        rx.tooltip(rx.icon("zap", size=14),
-                                   content="The current selected chat."),
-                        variant="soft"
+                        rx.tooltip(
+                            rx.icon("zap", size=14),
+                            content="The current selected chat.",
+                        ),
+                        variant="soft",
                     )
                 ),
                 align_items="center",

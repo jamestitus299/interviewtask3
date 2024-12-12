@@ -3,27 +3,21 @@ import reflex as rx
 from vchat.utils.genai_LLM import get_ans_from_LLM
 import logging
 
-# import google.generativeai as genai
-# from dotenv import load_dotenv
-# import os
-# load_dotenv()
-# # Checking if the API key is set properly
-# if not os.getenv("GEMINI_API_KEY"):
-#     raise Exception("Please set GEMINI_API_KEY environment variable. Follow the setup in the readme")
-# genai.configure(api_key=os.environ["GEMINI_API_KEY"])
 
 class QA(rx.Base):
     """The chat format for transfer between backend and frontend"""
+
     question: str
-    text : str
-    code : str
-    is_code : bool
-    processing : bool
+    text: str
+    code: str
+    is_code: bool
+    processing: bool
 
 
 CHATS = {
     "Chats": [],
 }
+
 
 class app_state(rx.State):
     """The app state."""
@@ -42,8 +36,6 @@ class app_state(rx.State):
 
     # The name of the new chat.
     new_chat_name: str = ""
-    
-    api_key: str
 
     def create_chat(self):
         """Create a new chat."""
@@ -74,7 +66,7 @@ class app_state(rx.State):
             The list of chat names.
         """
         return list(self.chats.keys())
-    
+
     async def genai_process_question(self, form_data: dict[str, str]):
         """Get the response from the API.
 
@@ -88,14 +80,14 @@ class app_state(rx.State):
         # Check if the question is empty
         if question == "":
             return
-        
+
         prompt = question
         # prompt = make_question(question)
         # print(len(question))
         # print(len(prompt))
-        
+
         # Add the question to the list of questions.
-        qa = QA(question=question, text="", code ="", is_code=False, processing=False)
+        qa = QA(question=question, text="", code="", is_code=False, processing=False)
         self.chats[self.current_chat].append(qa)
 
         # Start the processing. Flags for rendering and animation.
@@ -103,16 +95,16 @@ class app_state(rx.State):
         self.chats[self.current_chat][-1].processing = True
         yield
 
-        try: 
-            # 
-            LLM_response= get_ans_from_LLM(prompt)
+        try:
+            #
+            LLM_response = get_ans_from_LLM(prompt)
             desc, code = LLM_response
-            # print("------------------") 
+            # print("------------------")
             # logging.info("-------------")
             # print(desc)
-            # print("------------------") 
+            # print("------------------")
             # print(code)
-            # print("------------------") 
+            # print("------------------")
             # # Ensure answer is not None before concatenation
             if code is not None:
                 self.chats[self.current_chat][-1].is_code = True
@@ -127,14 +119,14 @@ class app_state(rx.State):
                 self.chats[self.current_chat][-1].text = desc
                 yield
         except Exception as e:
-            print("ERROR " , e)
+            print("ERROR ", e)
             logging.error(e)
             self.chats[self.current_chat][-1].is_code = False
             answer = "Could not process your query. Try again after some time."
             self.chats[self.current_chat][-1].text = answer
         finally:
             yield
-        
+
         # Toggle the processing flags.
         self.chats[self.current_chat][-1].processing = False
         self.processing = False

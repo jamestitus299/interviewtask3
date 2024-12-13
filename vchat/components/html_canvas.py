@@ -15,8 +15,9 @@ class htmlState(rx.State):
 
 
 def html_render(code: str):
-    """Renders an HTML component using iframe."""
-    htmlState.set_code(code)
+    """Renders an HTML component."""
+    # htmlState.set_code(code)
+    htmlState.code = code
     return rx.container(
         rx.dialog.close(
             rx.button("Close", size="2"),
@@ -47,18 +48,20 @@ def html_render(code: str):
                     # ),
                     rx.code_block(
                         htmlState.code,
-                        show_line_numbers=True,
+                        # show_line_numbers=True,
                         can_copy=True,
-                        wrap_long_lines=True,  
-                        style={"height": "60vh", "width": "50vh"},
+                        wrap_long_lines=False,  
+                        style={"height": "60vh", "width": "60vh"},
                         # padding="6px",
                     ),
                     rx.spacer(spacing="2"),
                     rx.el.iframe(
                         src_doc=htmlState.code,
-                        style={"height": "60vh", "width": "50vh"},
+                        style={"height": "60vh", "width": "100vh"},
                         # border_radius="1em",
                     ),
+                    padding="0",
+                    margin="0"
                 ),
             ),
             rx.mobile_and_tablet(
@@ -82,9 +85,9 @@ def html_render(code: str):
                     # ),
                     rx.code_block(
                         htmlState.code,
-                        show_line_numbers=True,
+                        # show_line_numbers=True,
                         can_copy=True,
-                        wrap_long_lines=True,  
+                        wrap_long_lines=False,  
                         style={"height": "35vh", "width": "25vh"},
                         # padding="6px",
                     ),
@@ -97,6 +100,8 @@ def html_render(code: str):
             ),
         ),
         code=code,
+        padding="0",
+        margin="0",
         # id="jamestitus",
         # scope=react()
         # reactRunner(code=code)

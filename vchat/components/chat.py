@@ -87,12 +87,14 @@ def message(qa: QA) -> rx.Component:
                                                 qa.is_code == 1
                                             ),  # if code is HTML then html_render, else show_react_component
                                             html_render(
-                                                code=qa.code
+                                                code=qa.code,
                                             ),  # renders html code
                                             show_react_component(
                                                 code=qa.code
                                             ),  # renders react code
                                         ),
+                                        padding="0",
+                                        margin="0",
                                     ),
                                     min_height=rx.breakpoints(
                                         initial="100%",
@@ -102,19 +104,21 @@ def message(qa: QA) -> rx.Component:
                                     min_width=rx.breakpoints(
                                         initial="100%",
                                         sm="60%",
-                                        lg="80%",
+                                        lg="70%",
                                     ),
                                 ),
                             ),
-                        )
+                        ),
                     ),
                 ),
                 background_color=rx.color("accent", 4),
                 color=rx.color("accent", 12),
             ),
         ),
-        align="center",
-        justify="center",
+        # padding="0",
+        # margin="0",
+        # align="center",
+        # justify="center",
     )
 
 

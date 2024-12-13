@@ -6,7 +6,7 @@ from vchat.app_state import QA, app_state
 from vchat.components.html_canvas import html_render
 from vchat.components.react_component_canvas import show_react_component
 
-# styling for the chat message 
+# styling for the chat message
 message_style = dict(
     display="inline-block",
     padding=rx.breakpoints(
@@ -43,7 +43,7 @@ def message(qa: QA) -> rx.Component:
         rx.box(
             rx.container(
                 rx.cond(
-                    qa.processing, # show the loading spinner if the question is curently being processed
+                    qa.processing,  # show the loading spinner if the question is curently being processed
                     rx.button(rx.spinner(loading=True), "Generating", disabled=True),
                 ),
                 rx.vstack(
@@ -74,7 +74,7 @@ def message(qa: QA) -> rx.Component:
                     ),
                     rx.box(
                         rx.cond(
-                            qa.is_code, # show if LLM generated code
+                            qa.is_code,  # show if LLM generated code
                             rx.dialog.root(
                                 rx.dialog.trigger(
                                     rx.button("View Component"),
@@ -83,9 +83,15 @@ def message(qa: QA) -> rx.Component:
                                 rx.dialog.content(
                                     rx.container(
                                         rx.cond(
-                                            (qa.is_code == 1),  # if code is HTML then html_render, else show_react_component
-                                            html_render(code=qa.code), # renders html code
-                                            show_react_component(code=qa.code), # renders react code
+                                            (
+                                                qa.is_code == 1
+                                            ),  # if code is HTML then html_render, else show_react_component
+                                            html_render(
+                                                code=qa.code
+                                            ),  # renders html code
+                                            show_react_component(
+                                                code=qa.code
+                                            ),  # renders react code
                                         ),
                                     ),
                                     min_height=rx.breakpoints(

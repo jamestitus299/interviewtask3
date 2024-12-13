@@ -24,7 +24,8 @@ def index() -> rx.Component:
 
 # Create database
 # create_db()
-# insialize the  LLM model
+
+# inialize the  LLM model
 set_LLM_model()
 
 # Add state and page to the app.

@@ -1,9 +1,10 @@
 import reflex as rx
 import reflex_chakra as rc
 
-from vchat.components import loading_icon
+from vchat.components import html_canvas, loading_icon
 from vchat.app_state import QA, app_state
-from vchat.components import react_component_canvas
+from vchat.components.html_canvas import html_render
+from vchat.components.react_component_canvas import show_react_component
 
 
 message_style = dict(
@@ -73,8 +74,10 @@ def message(qa: QA) -> rx.Component:
                                 ),
                                 rx.dialog.content(
                                     rx.container(
-                                        react_component_canvas.show_live_component(
-                                            code=qa.code
+                                        rx.cond(
+                                            (qa.is_code == 1),  # if code is HTML
+                                            html_render(code=qa.code),
+                                            show_react_component(code=qa.code),
                                         ),
                                     ),
                                     min_height=rx.breakpoints(

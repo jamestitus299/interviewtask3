@@ -13,13 +13,13 @@ def check_prompt_is_for_react(text: str):
     return 0
 
 
-def check_text_for_html(text: str):
-    if "```html" in text:
+def check_text_for_html_code(text: str):
+    if "<!DOCTYPE html>" in text or "```html" in text:
         return 1
     return 0
 
 
-def check_text_for_jsx(text: str) -> int:
+def check_text_for_jsx_code(text: str) -> int:
     if "```jsx" in text:
         return 1
     return 0

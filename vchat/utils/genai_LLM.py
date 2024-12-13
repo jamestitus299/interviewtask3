@@ -10,8 +10,8 @@ from vchat.utils.clean_html import remove_html_head, get_html_body
 from vchat.utils.utils_functions import (
     check_prompt_is_for_html,
     check_prompt_is_for_react,
-    check_text_for_html,
-    check_text_for_jsx,
+    check_text_for_html_code,
+    check_text_for_jsx_code,
 )
 
 api_key = None
@@ -61,18 +61,20 @@ def get_desc_code_from_response(text: str) -> List[str]:
     # Remove ``` markers from code snippets
     # cleaned_code_snippets = [snippet[6:-3].strip() for snippet in code_snippets]
     code = code_snippets[0]
+    # val = []
 
-    if check_text_for_html(code):
-        # code = remove_html_head(code)
-        code = get_html_body(code)
+    if check_text_for_html_code(code):
+        code = re.sub(r"```html", "", code, flags=re.DOTALL)
+        code = re.sub(r"```", "", code, flags=re.DOTALL)
         code = code.strip()
-        code = re.sub(r"<!.*?-->", "", code, flags=re.DOTALL)
-        code = re.sub(r"<body>", '<div class="container p-4">', code, flags=re.DOTALL)
-        code = re.sub(r"</body>", "</div>", code, flags=re.DOTALL)
-        # code = re.sub(r'<!--.*?-->|/\*.*?\*/|//.*?$', '', code, flags=re.DOTALL | re.MULTILINE)
-        # code = re.sub(r'html', '', code, flags=re.DOTALL)
-        # print("----Html code-----------")
-        # print(code)
+
+        val = [text, code]
+        return val
+
+    if check_text_for_jsx_code(code):
+        code = re.sub(r"```jsx", "", code, flags=re.DOTALL)
+        code = re.sub(r"```", "", code, flags=re.DOTALL)
+        code = code.strip()
         val = [text, code]
         return val
 
@@ -128,7 +130,9 @@ def get_ans_from_LLM_Gemini(prompt: str) -> List[str]:
     response = model.generate_content(prompt)
     response = response.text
 
-    if not check_text_for_html(response) and not check_prompt_is_for_react(response):
+    if not check_prompt_is_for_html(response) and not check_prompt_is_for_react(
+        response
+    ):
         val = [response, None]
         return val
 

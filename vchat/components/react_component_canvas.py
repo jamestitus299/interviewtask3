@@ -195,14 +195,14 @@ reactRunner = ReactRunner.create
 #         """)
 
 
-# Use the component in your app.
-def show_live_component(code: str):
+# Component to render react code
+def show_react_component(code: str):
     """
-        Renders a live preview, editable component of a react/html component
+        Renders a live preview, editable view of a react/html component
     args:
-        code (str) : the code to be rendered as a string
+        code (str) : the code to be rendered
     Returns:
-        container
+        COmponent
     """
     # return reactRunner(code=code)
     # return react()
@@ -220,7 +220,7 @@ def show_live_component(code: str):
             # rx.script(src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"),
             rx.container(
                 rx.heading(
-                    "Component",
+                    "React Component",
                     align="center",
                     justify="center",
                     margin_bottom="10px",

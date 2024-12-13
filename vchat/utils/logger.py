@@ -1,5 +1,6 @@
 import logging
 
+# config looger for application
 logging.basicConfig(
     filename="logfile.log", format="%(asctime)s %(message)s", filemode="w"
 )

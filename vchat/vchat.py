@@ -31,7 +31,7 @@ set_LLM_model()
 # Add state and page to the app.
 app = rx.App(
     theme=rx.theme(
-        appearance="inherit", 
+        appearance="dark", 
         has_background=True,
         radius="large", 
         accent_color="sky",
@@ -41,6 +41,5 @@ app = rx.App(
         "https://cdn.tailwindcss.com",
     ],
 )
-
 app.add_page(index)
 

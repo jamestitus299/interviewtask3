@@ -19,37 +19,40 @@ logger = logger
 class QA(rx.Base):
     """The chat format for transfer between backend and frontend"""
 
-    question: str
-    text: str
-    code: str
-    is_code: int
-    processing: bool
+    question: str  # the question (prompt)
+    text: str  # the text (description) received from LLM
+    code: str  # the code received from LLM
+    is_code: int  # if the response from LLM is a code
+    processing: bool  # flag to indicate whether question is being processed
 
 
+# Dictionary to store conversation data
+# Key: Conversion name (str)
+# Value: List of chat messages (list)
 CHATS = {
     "Chats": [],
 }
 
 
 class app_state(rx.State):
-    """The app state."""
+    """The main application state."""
 
     # A dict from the chat name to the list of questions and answers.
     chats: dict[str, list[QA]] = CHATS
 
-    # The current chat name.
-    current_chat = "Chats"
+    # The current conversation name. A conversation is single page of chats
+    current_conversation = "Chats"
 
     # The current question.
     question: str
 
-    # Whether we are processing the question.
+    # flag to check if the question is currently being processed
     processing: bool = False
 
-    # The name of the new chat.
-    new_chat_name: str = ""
+    # The name of the new conversation.
+    new_conversation_name: str = ""
 
-    # for rate limiting
+    # for rate limiting (30 requests in one hour)
     request_count: int = 0
     last_request_time: str = None
     max_requests: int = 30  # Maximum requests allowed
@@ -59,7 +62,7 @@ class app_state(rx.State):
         """Check if the request should be rate limited
 
         Returns:
-            bool: True if allowed, False if rate limited
+            bool: True if allowed, False if rate exceeded
         """
         current_time = datetime.now()
         # print(self.request_count)
@@ -81,34 +84,34 @@ class app_state(rx.State):
             return True
 
         self.request_count += 1
-        # Check if we've exceeded the rate limit
+        # Check if the rate limit has been reached/exceeded
         if self.request_count >= self.max_requests:
             return False
         return True
 
-    def create_chat(self):
-        """Create a new chat."""
+    def create_conversation(self):
+        """Create a new conversation."""
         # Add the new chat to the list of chats.
-        self.current_chat = self.new_chat_name
-        self.chats[self.new_chat_name] = []
+        self.current_conversation = self.new_conversation_name
+        self.chats[self.new_conversation_name] = []
 
-    def delete_chat(self):
+    def delete_conversation(self):
         """Delete the current chat."""
-        del self.chats[self.current_chat]
+        del self.chats[self.current_conversation]
         if len(self.chats) == 0:
             self.chats = CHATS
-        self.current_chat = list(self.chats.keys())[0]
+        self.current_conversation = list(self.chats.keys())[0]
 
-    def set_chat(self, chat_name: str):
+    def set_conversation(self, chat_name: str):
         """Set the name of the current chat.
 
         Args:
             chat_name: The name of the chat.
         """
-        self.current_chat = chat_name
+        self.current_conversation = chat_name
 
     @rx.var
-    def chat_titles(self) -> list[str]:
+    def conversation_titles(self) -> list[str]:
         """Get the list of chat titles.
 
         Returns:
@@ -117,10 +120,10 @@ class app_state(rx.State):
         return list(self.chats.keys())
 
     async def genai_process_question(self, form_data: dict[str, str]):
-        """Get the response from the API.
+        """Get the response from the LLM model.
 
         Args:
-            form_data: A dict with the current question.
+            form_data: question (prompt)
         """
 
         logger.info("Request received")
@@ -132,14 +135,15 @@ class app_state(rx.State):
             return
         prompt = question
 
-        # Add the question to the list of questions.
+        # Add the question to the list of questions, to the conversation
         qa = QA(question=question, text="", code="", is_code=0, processing=False)
-        self.chats[self.current_chat].append(qa)
+        self.chats[self.current_conversation].append(qa)
         # Flags for rendering loading animation.
         self.processing = True
-        self.chats[self.current_chat][-1].processing = True
+        self.chats[self.current_conversation][-1].processing = True
         yield
 
+        # check rate limiter
         if not self.check_rate_limit():
             # Create a new QA object for the rate limit message
             qa = QA(
@@ -149,11 +153,11 @@ class app_state(rx.State):
                 is_code=0,
                 processing=False,
             )
-            self.chats[self.current_chat].append(qa)
+            self.chats[self.current_conversation].append(qa)
             return
 
         try:
-            #
+            # send prompt to LLM and get response
             async def get_response(prompt):
                 LLM_response = get_ans_from_LLM(prompt)
                 return LLM_response
@@ -162,51 +166,48 @@ class app_state(rx.State):
             LLM_response = await asyncio.wait_for(get_response(prompt), timeout=45)
             desc, code = LLM_response
 
-            # Ensure answer is not None before concatenation
+            # Check Code generated by LLM is HTML or react code 
+            # (html-1) (react-2) for rendering in the frontend
             if code is not None:
                 if check_text_for_html_code(code):
-                    self.chats[self.current_chat][-1].is_code = 1
+                    self.chats[self.current_conversation][-1].is_code = 1
                 else:
-                    self.chats[self.current_chat][-1].is_code = 2
-                self.chats[self.current_chat][-1].text = desc
-                self.chats[self.current_chat][-1].code = code
+                    self.chats[self.current_conversation][-1].is_code = 2
+                self.chats[self.current_conversation][-1].text = desc
+                self.chats[self.current_conversation][-1].code = code
                 yield
             else:
-                # Handle the case where answer_text is None, perhaps log it or assign a default value
-                # For example, assigning an empty string if answer_text is None
-                # answer = "Could not process your query. Please try again."
-                self.chats[self.current_chat][-1].is_code = 0
-                self.chats[self.current_chat][-1].text = desc
+                # Handle the case where LLM did not generate any code, only pass generated text to frontend
+                self.chats[self.current_conversation][-1].is_code = 0
+                self.chats[self.current_conversation][-1].text = desc
                 yield
         # except RateLimitExceeded:
         #     logging.error("Rate limit exceeded.")
-        #     self.chats[self.current_chat][-1].is_code = 0
-        #     self.chats[self.current_chat][
+        #     self.chats[self.current_conversation][-1].is_code = 0
+        #     self.chats[self.current_conversation][
         #         -1
         #     ].text = "You have exceeded your limit. Try after some time."
         #     # Toggle the processing flags.
-        #     self.chats[self.current_chat][-1].processing = False
+        #     self.chats[self.current_conversation][-1].processing = False
         #     self.processing = False
         #     yield
         except asyncio.TimeoutError:
             logger.error("Processing took too long and timed out.")
-            self.chats[self.current_chat][-1].is_code = 0
-            self.chats[self.current_chat][
-                -1
-            ].text = "Processing timed out. Please try again later."
+            self.chats[self.current_conversation][-1].is_code = 0
+            self.chats[self.current_conversation][-1].text = "Processing timed out. Please try again later."
             # Toggle the processing flags.
-            self.chats[self.current_chat][-1].processing = False
+            self.chats[self.current_conversation][-1].processing = False
             self.processing = False
             yield
         except Exception as e:
+            self.chats[self.current_conversation][-1].is_code = False
+            answer = "Could not process your query. Try again after some time."
+            self.chats[self.current_conversation][-1].text = answer
+            yield
             print("ERROR ", e)
             logger.error(e)
-            self.chats[self.current_chat][-1].is_code = False
-            answer = "Could not process your query. Try again after some time."
-            self.chats[self.current_chat][-1].text = answer
-            yield
         finally:
             # Toggle the processing flags.
-            self.chats[self.current_chat][-1].processing = False
+            self.chats[self.current_conversation][-1].processing = False
             self.processing = False
             yield

@@ -2,15 +2,21 @@ import reflex as rx
 
 
 class htmlState(rx.State):
-    code: str
+    code: str # the html code
+    
+    def set_code(self, code: str):
+        """Set the HTML code."""
+        self.code = code
 
     rx.event
     def update_code(self, new_code: str):
+        """Update the HTML code."""
         self.code = new_code
 
 
 def html_render(code: str):
-    htmlState.code = code
+    """Renders an HTML component using iframe."""
+    htmlState.set_code(code)
     return rx.container(
         rx.dialog.close(
             rx.button("Close", size="2"),
@@ -91,7 +97,7 @@ def html_render(code: str):
             ),
         ),
         code=code,
-        id="jamestitus",
+        # id="jamestitus",
         # scope=react()
         # reactRunner(code=code)
     )

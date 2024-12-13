@@ -5,7 +5,7 @@ from vchat.app_state import app_state
 
 
 def modal() -> rx.Component:
-    """A modal to create a new chat."""
+    """A modal to create a new conversation."""
     return rc.modal(
         rc.modal_overlay(
             rc.modal_content(
@@ -27,7 +27,7 @@ def modal() -> rx.Component:
                 rc.modal_body(
                     rc.input(
                         placeholder="Type something...",
-                        on_blur=app_state.set_new_chat_name,
+                        on_blur=app_state.set_new_conversation_name,
                         bg="#222",
                         border_color="#fff3",
                         _placeholder={"color": "#fffa"},
@@ -42,7 +42,7 @@ def modal() -> rx.Component:
                         py="2",
                         h="auto",
                         _hover={"bg": "#4c2db3"},
-                        on_click=app_state.create_chat,
+                        on_click=app_state.create_conversation,
                     ),
                 ),
                 bg="#222",

@@ -3,23 +3,19 @@ from vchat.app_state import app_state
 
 
 def sidebar_chat(chat: str) -> rx.Component:
-    """A sidebar chat item.
-
-    Args:
-        chat: The chat item.
-    """
+    """A sidebar conversation items, to select and delete conversation."""
     return rx.drawer.close(
         rx.hstack(
             rx.button(
                 chat,
-                on_click=lambda: app_state.set_chat(chat),
+                on_click=lambda: app_state.set_conversation(chat),
                 width="80%",
                 variant="surface",
             ),
             rx.button(
                 rx.icon(
                     tag="trash",
-                    on_click=app_state.delete_chat,
+                    on_click=app_state.delete_conversation,
                     stroke_width=1,
                 ),
                 width="20%",
@@ -32,7 +28,7 @@ def sidebar_chat(chat: str) -> rx.Component:
 
 
 def sidebar(trigger) -> rx.Component:
-    """The sidebar component."""
+    """The sidebar component. Contains list of conversations"""
     return rx.drawer.root(
         rx.drawer.trigger(trigger),
         rx.drawer.overlay(),
@@ -41,7 +37,7 @@ def sidebar(trigger) -> rx.Component:
                 rx.vstack(
                     rx.heading("Chats", color=rx.color("mauve", 11)),
                     rx.divider(),
-                    rx.foreach(app_state.chat_titles, lambda chat: sidebar_chat(chat)),
+                    rx.foreach(app_state.conversation_titles, lambda chat: sidebar_chat(chat)),
                     align_items="stretch",
                     width="100%",
                 ),
@@ -59,20 +55,20 @@ def sidebar(trigger) -> rx.Component:
 
 
 def modal(trigger) -> rx.Component:
-    """A modal to create a new chat."""
+    """A modal to create a new conversation."""
     return rx.dialog.root(
         rx.dialog.trigger(trigger),
         rx.dialog.content(
             rx.hstack(
                 rx.input(
                     placeholder="Name your conversation...",
-                    on_blur=app_state.set_new_chat_name,
+                    on_blur=app_state.set_new_conversation_name,
                     width=["15em", "20em", "30em", "30em", "30em", "30em"],
                 ),
                 rx.dialog.close(
                     rx.button(
                         "Create chat",
-                        on_click=app_state.create_chat,
+                        on_click=app_state.create_conversation,
                     ),
                 ),
                 spacing="2",
@@ -83,6 +79,7 @@ def modal(trigger) -> rx.Component:
 
 
 def navbar():
+    """The navbar"""
     return rx.box(
         rx.hstack(
             rx.hstack(
@@ -95,7 +92,7 @@ def navbar():
                 ),
                 rx.desktop_only(
                     rx.badge(
-                        app_state.current_chat,
+                        app_state.current_conversation,
                         rx.tooltip(
                             rx.icon("zap", size=14),
                             content="The current selected chat.",

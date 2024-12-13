@@ -107,27 +107,20 @@ reactRunner = ReactRunner.create
 # Component to render react code
 def show_react_component(code: str):
     """
-        Renders a live preview, editable view of a react/html component
+        Renders a live preview, editable view of a react component
     args:
         code (str) : the code to be rendered
     Returns:
-        COmponent
+        Component
     """
-    # scope = {
-    #     "React": "React",
-    # }
-    # code = "<h1>James TituS</h1>"
-    # return reactRunner(code="<h1>James TituS</h1>", scope=scope)
-    # return react()
-    # State.update_code(code)
     return rx.container(
-        rx.script(
-            src="https://cdnjs.cloudflare.com/ajax/libs/react/16.6.3/umd/react.production.min.js"
-        ),
-        rx.script(
-            src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.6.3/umd/react-dom.production.min.js"
-        ),
-        rx.script("https://unpkg.com/@babel/standalone/babel.min.js"),
+        # rx.script(
+        #     src="https://cdnjs.cloudflare.com/ajax/libs/react/16.6.3/umd/react.production.min.js"
+        # ),
+        # rx.script(
+        #     src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.6.3/umd/react-dom.production.min.js"
+        # ),
+        # rx.script("https://unpkg.com/@babel/standalone/babel.min.js"),
         rx.dialog.close(
             rx.button("Close", size="2"),
             position="sticky",

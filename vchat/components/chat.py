@@ -6,7 +6,7 @@ from vchat.app_state import QA, app_state
 from vchat.components.html_canvas import html_render
 from vchat.components.react_component_canvas import show_react_component
 
-
+# styling for the chat message 
 message_style = dict(
     display="inline-block",
     padding=rx.breakpoints(
@@ -43,13 +43,13 @@ def message(qa: QA) -> rx.Component:
         rx.box(
             rx.container(
                 rx.cond(
-                    qa.processing,
+                    qa.processing, # show the loading spinner if the question is curently being processed
                     rx.button(rx.spinner(loading=True), "Generating", disabled=True),
                 ),
                 rx.vstack(
                     rx.box(
                         rx.markdown(
-                            qa.text,
+                            qa.text,  # the questin/ prompt entered by the user
                         ),
                         # rx.code_block(
                         #     qa.code,
@@ -74,7 +74,7 @@ def message(qa: QA) -> rx.Component:
                     ),
                     rx.box(
                         rx.cond(
-                            qa.is_code,
+                            qa.is_code, # show if LLM generated code
                             rx.dialog.root(
                                 rx.dialog.trigger(
                                     rx.button("View Component"),
@@ -83,9 +83,9 @@ def message(qa: QA) -> rx.Component:
                                 rx.dialog.content(
                                     rx.container(
                                         rx.cond(
-                                            (qa.is_code == 1),  # if code is HTML
-                                            html_render(code=qa.code),
-                                            show_react_component(code=qa.code),
+                                            (qa.is_code == 1),  # if code is HTML then html_render, else show_react_component
+                                            html_render(code=qa.code), # renders html code
+                                            show_react_component(code=qa.code), # renders react code
                                         ),
                                     ),
                                     min_height=rx.breakpoints(
@@ -113,10 +113,11 @@ def message(qa: QA) -> rx.Component:
 
 
 def chat() -> rx.Component:
-    """List all the messages in a single conversation."""
+    """List all the messages/chat in a single conversation."""
     return rx.vstack(
         rx.box(
-            rx.foreach(app_state.chats[app_state.current_chat], message), width="100%"
+            rx.foreach(app_state.chats[app_state.current_conversation], message),
+            width="100%",
         ),
         py="8",
         flex="1",
@@ -130,7 +131,7 @@ def chat() -> rx.Component:
 
 
 def action_bar() -> rx.Component:
-    """The action bar to send a new message."""
+    """The action bar to send a new message. Text area for the user"""
     return rx.center(
         rx.vstack(
             rc.form(

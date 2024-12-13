@@ -61,6 +61,7 @@ def get_desc_code_from_response(text: str) -> List[str]:
     # Remove ``` markers from code snippets
     # cleaned_code_snippets = [snippet[6:-3].strip() for snippet in code_snippets]
     code = code_snippets[0]
+    print(code)
     # val = []
 
     if check_text_for_html_code(code):

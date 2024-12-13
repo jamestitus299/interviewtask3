@@ -94,89 +94,6 @@ class React(rx.Component):
     tag = "React"
 
 
-# class Hello(NoSSRComponent):
-#     # Use an absolute path starting with /public
-#     library = "/public/hello"
-
-#     # Define everything else as normal.
-#     tag = "Example"
-
-# class ContentRenderer(rx.NoSSRComponent):
-#     """A component that renders different types of content."""
-
-#     # Define the library to use
-#     # library = "content-renderer"
-
-#     # # Define the props
-#     # tag = "ContentRenderer"
-
-#     # Define the properties
-#     content: Any
-#     wrapper_class_name: Optional[str] = "p-4"
-
-#     def _get_custom_code(self):
-#         return """
-#                 import { createElement, isValidElement } from "react"
-
-#                 export const ContentRenderer = ({ content, wrapperClassName = "p-4" }) => {
-#                     const renderContent = () => {
-#                         // If content is a function, call it
-#                         if (typeof content === "function") {
-#                             return content();
-#                         }
-
-#                         // If content is a valid React element, render it directly
-#                         if (isValidElement(content)) {
-#                             return content;
-#                         }
-
-#                         // If content is a string, check if it's HTML
-#                         if (typeof content === "string") {
-#                             if (content.trim().startsWith("<")) {
-#                                 return (
-#                                     <div
-#                                         dangerouslySetInnerHTML={{ __html: content }}
-#                                         className="content-html"
-#                                     />
-#                                 );
-#                             }
-#                             // For plain strings, render as text
-#                             return <span className="content-text">{content}</span>;
-#                         }
-
-#                         // Return null for unsupported content types
-#                         return null;
-#                     };
-
-#                     return <div className={wrapperClassName}>{renderContent()}</div>;
-#                 }"""
-
-# def context_renderer() -> rx.Component:
-#     # HTML string example
-#     html_content = "<h1>Hello World</h1><p>This is <strong>HTML</strong> content</p>"
-
-#     # Code example
-#     code_example = "<h1> James </h1>"
-
-#     return rx.vstack(
-#         rx.heading("Content Renderer Examples", size="2"),
-#         rx.box(
-#             ContentRenderer.create(
-#                 content=html_content,
-#                 wrapper_class_name="p-4 bg-gray-100 rounded"
-#             )
-#         ),
-#         rx.box(
-#             ContentRenderer.create(
-#                 content=code_example,
-#                 wrapper_class_name="p-4 bg-blue-100 rounded"
-#             )
-#         ),
-#         spacing="4",
-#         padding="4",
-#     )
-
-
 # Convenience function to create the component.
 # react = React.create
 reactcanvas = LiveProvider.create
@@ -185,14 +102,6 @@ editable = LiveEditable.create
 error = LiveError.create
 reactRunner = ReactRunner.create
 # hello = ContentRenderer.create
-
-
-# class State(rx.State):
-#     def __init__(self):
-#         super().__init__()
-#         self.add_style("""
-#             @import "/node_modules/bootstrap/dist/css/bootstrap.min.css";
-#         """)
 
 
 # Component to render react code
@@ -204,10 +113,21 @@ def show_react_component(code: str):
     Returns:
         COmponent
     """
-    # return reactRunner(code=code)
+    # scope = {
+    #     "React": "React",
+    # }
+    # code = "<h1>James TituS</h1>"
+    # return reactRunner(code="<h1>James TituS</h1>", scope=scope)
     # return react()
     # State.update_code(code)
     return rx.container(
+        rx.script(
+            src="https://cdnjs.cloudflare.com/ajax/libs/react/16.6.3/umd/react.production.min.js"
+        ),
+        rx.script(
+            src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.6.3/umd/react-dom.production.min.js"
+        ),
+        rx.script("https://unpkg.com/@babel/standalone/babel.min.js"),
         rx.dialog.close(
             rx.button("Close", size="2"),
             position="sticky",
@@ -216,8 +136,6 @@ def show_react_component(code: str):
         ),
         # rx.scroll_area(
         reactcanvas(
-            # rx.script(src="https://unpkg.com/react@18/umd/react.development.js"),
-            # rx.script(src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"),
             rx.container(
                 rx.heading(
                     "React Component",
@@ -310,7 +228,7 @@ def show_react_component(code: str):
                 ),
             ),
             code=code,
-            id="jamestitus",
+            # id="jamestitus",
             # scope=react()
             # reactRunner(code=code)
         ),
@@ -321,5 +239,6 @@ def show_react_component(code: str):
         # ),
         # width="100%",
         # style={"height": "auto", "width": "auto"},
-        stack_children_full_width=True,
+        # stack_children_full_width=True,
+        padding="0px",
     )

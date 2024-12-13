@@ -1,7 +1,7 @@
 import reflex as rx
 import reflex_chakra as rc
 
-from vchat.components import html_canvas, loading_icon
+from vchat.components import loading_icon
 from vchat.app_state import QA, app_state
 from vchat.components.html_canvas import html_render
 from vchat.components.react_component_canvas import show_react_component
@@ -51,6 +51,14 @@ def message(qa: QA) -> rx.Component:
                         rx.markdown(
                             qa.text,
                         ),
+                        # rx.code_block(
+                        #     qa.code,
+                        #     show_line_numbers=True,
+                        #     can_copy=True,
+                        #     wrap_long_lines=True,
+                        #     # style={"height": "35vh", "width": "25vh"},
+                        #     # padding="6px",
+                        # ),
                         text_align="left",
                         margin_top="1em",
                         margin_bottom="1em",
@@ -61,7 +69,7 @@ def message(qa: QA) -> rx.Component:
                             xs="15%",
                             sm="50%",
                             md="80%",
-                            lg="100%",
+                            lg="95%",
                         ),
                     ),
                     rx.box(

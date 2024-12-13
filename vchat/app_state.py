@@ -1,7 +1,10 @@
-from typing import List
+from typing import List, Optional
+from aiolimiter import AsyncLimiter
 import reflex as rx
 import logging
 import asyncio
+from datetime import datetime
+from vchat.utils.custom_exceptions import RateLimitExceeded
 from vchat.utils.genai_LLM import get_ans_from_LLM
 from vchat.utils.utils_functions import (
     check_prompt_is_for_react,
@@ -43,6 +46,43 @@ class app_state(rx.State):
     # The name of the new chat.
     new_chat_name: str = ""
 
+    # for rate limiting
+    request_count: int = 0
+    last_request_time: str = None
+    max_requests: int = 30  # Maximum requests allowed
+    time_window: int = 3600  # time in seconds
+
+    def check_rate_limit(self) -> bool:
+        """Check if the request should be rate limited
+
+        Returns:
+            bool: True if allowed, False if rate limited
+        """
+        current_time = datetime.now()
+        # print(self.request_count)
+        print(self.last_request_time)
+
+        # Initialize last_request_time if it's None
+        if not self.last_request_time:
+            self.last_request_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
+            self.request_count = 1
+            return True
+
+        # Reset count if time window has passed
+        last_time = datetime.strptime(self.last_request_time, "%Y-%m-%d %H:%M:%S")
+        time_diff = current_time - last_time
+        time_diff = time_diff.total_seconds()
+        if time_diff > self.time_window:
+            self.request_count = 0
+            self.last_request_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
+            return True
+
+        self.request_count += 1
+        # Check if we've exceeded the rate limit
+        if self.request_count >= self.max_requests:
+            return False
+        return True
+
     def create_chat(self):
         """Create a new chat."""
         # Add the new chat to the list of chats.
@@ -81,6 +121,18 @@ class app_state(rx.State):
         """
 
         print("----request received-----")
+
+        if not self.check_rate_limit():
+            # Create a new QA object for the rate limit message
+            qa = QA(
+                question=form_data["question"],
+                text="Rate limit exceeded. Please trying after some time.",
+                code="",
+                is_code=0,
+                processing=False,
+            )
+            self.chats[self.current_chat].append(qa)
+            return
 
         question = form_data["question"]
         # print(question)
@@ -130,6 +182,16 @@ class app_state(rx.State):
                 self.chats[self.current_chat][-1].is_code = 0
                 self.chats[self.current_chat][-1].text = desc
                 yield
+        # except RateLimitExceeded:
+        #     logging.error("Rate limit exceeded.")
+        #     self.chats[self.current_chat][-1].is_code = 0
+        #     self.chats[self.current_chat][
+        #         -1
+        #     ].text = "You have exceeded your limit. Try after some time."
+        #     # Toggle the processing flags.
+        #     self.chats[self.current_chat][-1].processing = False
+        #     self.processing = False
+        #     yield
         except asyncio.TimeoutError:
             logging.error("Processing took too long and timed out.")
             self.chats[self.current_chat][-1].is_code = 0

@@ -3,9 +3,8 @@
 import reflex as rx
 import reflex_chakra as rc
 from vchat.components import chat, navbar
-
-from vchat.db.db_tables import create_db
 from vchat.utils.genai_LLM import set_LLM_model
+# from vchat.db.db_tables import create_db
 
 
 def index() -> rx.Component:

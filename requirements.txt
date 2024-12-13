@@ -4,5 +4,6 @@ google-generativeai
 SQLAlchemy
 python-dotenv
 beautifulsoup4
+aiolimiter
 anthropic
 openai

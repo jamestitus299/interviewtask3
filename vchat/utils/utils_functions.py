@@ -8,7 +8,7 @@ def check_prompt_is_for_html(text: str):
 
 
 def check_prompt_is_for_react(text: str):
-    if "react" in text or "code" in text or "component" in text:
+    if "react" in text:
         return 1
     return 0
 

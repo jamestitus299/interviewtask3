@@ -21,7 +21,6 @@ class RateLimitManager:
         Returns:
             bool: True if token acquired, False if rate limited
         """
-        print("---rate---")
         try:
             await self._limiter.acquire()
             return True

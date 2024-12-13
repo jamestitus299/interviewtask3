@@ -144,7 +144,7 @@ def action_bar() -> rx.Component:
                                 )
                             ),
                             size="3",
-                            placeholder="html/react component...",
+                            placeholder="html/react code... sign up form...",
                             text_wrap=True,
                             id="question",
                             width=["15em", "20em", "45em", "50em", "50em", "50em"],

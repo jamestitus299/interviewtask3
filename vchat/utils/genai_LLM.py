@@ -55,13 +55,10 @@ def get_desc_code_from_response(text: str) -> List[str]:
     # Extract all code blocks
     code_snippets = re.findall(code_pattern, text)
 
-    # Remove code blocks from the text to get the description
+    # Remove code blocks from the text to get the description and code
     description = re.sub(code_pattern, "", text).strip()
-
-    # Remove ``` markers from code snippets
-    # cleaned_code_snippets = [snippet[6:-3].strip() for snippet in code_snippets]
     code = code_snippets[0]
-    print(code)
+    # print(code)
     # val = []
 
     if check_text_for_html_code(code):
@@ -102,7 +99,6 @@ def get_desc_code_from_response(text: str) -> List[str]:
     # Check for valid React component pattern
     # component_pattern = r'const\s+\w+\s*=\s*(\(\)\s*=>|function\s*\(.*?\)\s*{)'
     # component_match = re.search(component_pattern, code_without_imports)
-
     # if not component_match:
     #     raise ValueError('No valid React component found')
     # print(transformed_code)

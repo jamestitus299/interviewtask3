@@ -1,7 +1,6 @@
 from typing import List, Optional
 from aiolimiter import AsyncLimiter
 import reflex as rx
-import logging
 import asyncio
 from datetime import datetime
 from vchat.utils.custom_exceptions import RateLimitExceeded
@@ -11,6 +10,10 @@ from vchat.utils.utils_functions import (
     check_text_for_html_code,
     check_text_for_jsx_code,
 )
+from vchat.utils.logger import logger
+
+# logger for the application
+logger = logger
 
 
 class QA(rx.Base):
@@ -60,7 +63,7 @@ class app_state(rx.State):
         """
         current_time = datetime.now()
         # print(self.request_count)
-        print(self.last_request_time)
+        # print(self.last_request_time)
 
         # Initialize last_request_time if it's None
         if not self.last_request_time:
@@ -120,7 +123,22 @@ class app_state(rx.State):
             form_data: A dict with the current question.
         """
 
-        print("----request received-----")
+        logger.info("Request received")
+        # print("----request received-----")
+
+        question = form_data["question"]
+        # Check if the question is empty
+        if question == "":
+            return
+        prompt = question
+
+        # Add the question to the list of questions.
+        qa = QA(question=question, text="", code="", is_code=0, processing=False)
+        self.chats[self.current_chat].append(qa)
+        # Flags for rendering loading animation.
+        self.processing = True
+        self.chats[self.current_chat][-1].processing = True
+        yield
 
         if not self.check_rate_limit():
             # Create a new QA object for the rate limit message
@@ -133,28 +151,6 @@ class app_state(rx.State):
             )
             self.chats[self.current_chat].append(qa)
             return
-
-        question = form_data["question"]
-        # print(question)
-
-        # Check if the question is empty
-        if question == "":
-            return
-
-        prompt = question
-
-        # prompt = make_question(question)
-        # print(len(question))
-        # print(len(prompt))
-
-        # Add the question to the list of questions.
-        qa = QA(question=question, text="", code="", is_code=0, processing=False)
-        self.chats[self.current_chat].append(qa)
-
-        # Flags for rendering loading animation.
-        self.processing = True
-        self.chats[self.current_chat][-1].processing = True
-        yield
 
         try:
             #
@@ -193,7 +189,7 @@ class app_state(rx.State):
         #     self.processing = False
         #     yield
         except asyncio.TimeoutError:
-            logging.error("Processing took too long and timed out.")
+            logger.error("Processing took too long and timed out.")
             self.chats[self.current_chat][-1].is_code = 0
             self.chats[self.current_chat][
                 -1
@@ -204,7 +200,7 @@ class app_state(rx.State):
             yield
         except Exception as e:
             print("ERROR ", e)
-            logging.error(e)
+            logger.error(e)
             self.chats[self.current_chat][-1].is_code = False
             answer = "Could not process your query. Try again after some time."
             self.chats[self.current_chat][-1].text = answer

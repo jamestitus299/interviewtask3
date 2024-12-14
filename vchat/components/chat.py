@@ -149,7 +149,6 @@ def action_bar() -> rx.Component:
                         rx.input.slot(
                             rx.tooltip(
                                 rx.icon("zap", size=18),
-                                # content="Enter a question to get a response.",
                             )
                         ),
                         size="3",
@@ -158,6 +157,7 @@ def action_bar() -> rx.Component:
                         id="question",
                         width=["15em", "20em", "45em", "50em", "50em", "50em"],
                         required=True,
+                        margin_left="10%"
                     ),
                     rx.button(
                         rx.cond(
@@ -182,7 +182,7 @@ def action_bar() -> rx.Component:
                 ),
                 color=rx.color("mauve", 10),
             ),
-            align_items="center",
+            # align_items="center",
         ),
         position="sticky",
         bottom="0",

@@ -7,7 +7,7 @@ class LiveProvider(rx.Component):
     """React-live component."""
 
     library = "react-live-runner"
-    lib_dependencies: list[str] = ["react", "react-dom", "@babel/standalone"]
+    lib_dependencies: list[str] = ["react", "react-dom", "@babel/standalone", "react-runner", "react-simple-code-editor", "prism-react-renderer", "sucrase"]
     tag = "LiveProvider"
     code: rx.Var[str]
 
@@ -16,7 +16,7 @@ class LivePreview(rx.Component):
     """React-live component that shows the live view of the component"""
 
     library = "react-live-runner"
-    lib_dependencies: list[str] = ["react", "react-dom"]
+    lib_dependencies: list[str] = ["react", "react-dom", "@babel/standalone", "react-runner", "react-simple-code-editor", "prism-react-renderer", "sucrase"]
     tag = "LivePreview"
 
 
@@ -24,7 +24,7 @@ class LiveEditable(rx.Component):
     """React-live component that shows the editable code of the component"""
 
     library = "react-live-runner"
-    lib_dependencies: list[str] = ["react", "react-dom"]
+    lib_dependencies: list[str] = ["react", "react-dom", "@babel/standalone", "react-runner", "react-simple-code-editor", "prism-react-renderer", "sucrase"]
     tag = "LiveEditor"
 
 
@@ -32,7 +32,7 @@ class LiveError(rx.Component):
     """React-live component that shows the errors"""
 
     library = "react-live-runner"
-    lib_dependencies: list[str] = ["react", "react-dom"]
+    lib_dependencies: list[str] = ["react", "react-dom", "@babel/standalone", "react-runner", "react-simple-code-editor", "prism-react-renderer", "sucrase"]
     tag = "LiveError"
 
 

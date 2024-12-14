@@ -122,7 +122,7 @@ def get_ans_from_LLM_Gemini(prompt: str) -> List[str]:
         prompt += ". Give full html with head and body and the styling should be in bootstrap css only."
 
     if check_prompt_is_for_react(prompt):
-        prompt += ". the styling should be in bootstrap css only."
+        prompt += ". the styling should be in bootstrap css only. Give the code as a functional component."
 
     model = genai.GenerativeModel("gemini-1.5-flash")
     response = model.generate_content(prompt)

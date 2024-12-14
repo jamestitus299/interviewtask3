@@ -6,6 +6,7 @@ from vchat.app_state import QA, app_state
 from vchat.components.html_canvas import html_render
 from vchat.components.react_component_canvas import show_react_component
 
+
 # styling for the chat message
 message_style = dict(
     display="inline-block",

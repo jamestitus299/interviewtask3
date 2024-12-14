@@ -1,106 +1,101 @@
 import reflex as rx
-from reflex.components.component import NoSSRComponent
-import json
 from typing import Any, Dict, Optional
 
 
 # This is a reflex wrapper of the react-live packgage
-class LiveProvider(rx.NoSSRComponent):
+class LiveProvider(rx.Component):
     """React-live component."""
 
-    # The name of the npm package.
     library = "react-live-runner"
-
-    # Any additional libraries needed to use the component.
-    lib_dependencies: list[str] = []
-
-    # The name of the component to use from the package.
-    # LiveProvider, LiveEditor, LiveError, LivePreview
+    lib_dependencies: list[str] = ["react", "react-dom", "@babel/standalone"]
     tag = "LiveProvider"
-
-    # is_default = True
-
-    # # Any props that the component takes.
     code: rx.Var[str]
 
 
-class LivePreview(rx.NoSSRComponent):
+class LivePreview(rx.Component):
     """React-live component."""
 
-    # The name of the npm package.
     library = "react-live-runner"
-
-    # Any additional libraries needed to use the component.
-    lib_dependencies: list[str] = []
-
-    # The name of the component to use from the package.
-    # LiveProvider, LiveEditor, LiveError, LivePreview
+    lib_dependencies: list[str] = ["react", "react-dom"]
     tag = "LivePreview"
 
 
-class LiveEditable(rx.NoSSRComponent):
+class LiveEditable(rx.Component):
     """React-live component."""
 
-    # The name of the npm package.
     library = "react-live-runner"
-
-    # Any additional libraries needed to use the component.
-    lib_dependencies: list[str] = []
-
-    # The name of the component to use from the package.
-    # LiveProvider, LiveEditor, LiveError, LivePreview
+    lib_dependencies: list[str] = ["react", "react-dom"]
     tag = "LiveEditor"
 
 
-class LiveError(rx.NoSSRComponent):
+class LiveError(rx.Component):
     """React-live component."""
 
-    # The name of the npm package.
     library = "react-live-runner"
-
-    # Any additional libraries needed to use the component.
-    lib_dependencies: list[str] = []
-
-    # The name of the component to use from the package.
-    # LiveProvider, LiveEditor, LiveError, LivePreview
+    lib_dependencies: list[str] = ["react", "react-dom"]
     tag = "LiveError"
 
 
-class ReactRunner(rx.NoSSRComponent):
-    """React-live component."""
+# class ReactRunner(rx.Component):
+#     """React-live component."""
 
-    # The name of the npm package.
-    library = "react-runner"
+#     # The name of the npm package.
+#     library = "react-runner"
 
-    # Any additional libraries needed to use the component.
-    lib_dependencies: list[str] = []
+#     # Any additional libraries needed to use the component.
+#     lib_dependencies: list[str] = []
 
-    # The name of the component to use from the package.
-    tag = "Runner"
+#     # The name of the component to use from the package.
+#     tag = "Runner"
 
 
-class React(rx.Component):
-    """React-live component."""
+# class React(rx.Component):
+#     """React-live component."""
 
-    # The name of the npm package.
-    library = "react"
+#     # The name of the npm package.
+#     library = "react"
 
-    # Any additional libraries needed to use the component.
-    lib_dependencies: list[str] = ["react-dom"]
+#     # Any additional libraries needed to use the component.
+#     lib_dependencies: list[str] = []
 
-    is_default = True
+#     is_default = True
 
-    # The name of the component to use from the package.
-    tag = "React"
+#     # The name of the component to use from the package.
+#     tag = "React"
+
+# class ReactDom(rx.Component):
+#     """React-live component."""
+
+#     # The name of the npm package.
+#     library = "react-dom"
+
+#     # Any additional libraries needed to use the component.
+#     lib_dependencies: list[str] = []
+
+#     # is_default = True
+
+#     # The name of the component to use from the package.
+#     tag = "React"
+
+
+# class Hello(rx.NoSSRComponent):
+#     library = "/public/hello"
+#     # Any additional libraries needed to use the component.
+#     lib_dependencies: list[str] = []
+
+#     # is_default = True
+
+#     # The name of the component to use from the package.
+#     tag = "UseRunner"
 
 
 # Convenience function to create the component.
 # react = React.create
-reactcanvas = LiveProvider.create
-preview = LivePreview.create
-editable = LiveEditable.create
-error = LiveError.create
-reactRunner = ReactRunner.create
+# reactcanvas = LiveProvider.create
+# preview = LivePreview.create
+# editable = LiveEditable.create
+# error = LiveError.create
+# reactRunner = ReactRunner.create
 # hello = ContentRenderer.create
 
 
@@ -113,19 +108,36 @@ def show_react_component(code: str):
     Returns:
         Component
     """
+    # scope =[jsx]
+    reactcanvas = LiveProvider.create
+    preview = LivePreview.create
+    editable = LiveEditable.create
+    error = LiveError.create
+    # react = React.create
+    # return rx.container(
+    #     Hello.create(code)
+    #     # ReactRunner.create(code=code)
+    # )
+    # return ReactRunner.create(code=code)
+    # return Hello.create(code=code)
     return rx.container(
-        # rx.script(
-        #     src="https://cdnjs.cloudflare.com/ajax/libs/react/16.6.3/umd/react.production.min.js"
-        # ),
-        # rx.script(
-        #     src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.6.3/umd/react-dom.production.min.js"
-        # ),
-        # rx.script("https://unpkg.com/@babel/standalone/babel.min.js"),
         rx.dialog.close(
             rx.button("Close", size="2"),
             position="sticky",
             top="0",
             left="0",
+        ),
+        rx.script(
+            src="https://unpkg.com/react@18/umd/react.production.min.js",
+            cross_origin="anonymous",
+        ),
+        rx.script(
+            src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js",
+            cross_origin="anonymous",
+        ),
+        rx.script(
+            src="https://unpkg.com/@babel/standalone/babel.min.js",
+            cross_origin="anonymous",
         ),
         # rx.scroll_area(
         reactcanvas(
@@ -146,7 +158,7 @@ def show_react_component(code: str):
                             scrollbars="both",
                             # padding="8",
                             style={"height": "60vh", "width": "90vh"},
-                            border_radius="1em",
+                            border_radius=".5em",
                         ),
                         rx.spacer(spacing="6"),
                         rx.scroll_area(
@@ -221,8 +233,7 @@ def show_react_component(code: str):
                 ),
             ),
             code=code,
-            # id="jamestitus",
-            # scope=react()
+            # scope=react
             # reactRunner(code=code)
         ),
         #     type="always",
@@ -233,5 +244,6 @@ def show_react_component(code: str):
         # width="100%",
         # style={"height": "auto", "width": "auto"},
         # stack_children_full_width=True,
+        # id="jamestitus",
         padding="0px",
     )

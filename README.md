@@ -29,3 +29,11 @@ reflex init
 reflex run
 ```
 Access the app at http://localhost:3000 (if you are using a dev container like codespaces be sure to forward the ports)
+
+# Usage examples -- prompts
+```
+html code for a signup form with dark background and purple button
+
+react code for a login form 
+```
+The application works great with HTML code, but may give some rendering errors for react code

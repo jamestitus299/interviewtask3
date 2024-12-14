@@ -19,7 +19,7 @@ pip install -r requirements.txt
     Log in using your google account. You will be redirected to the Google AI Studio page 
     Click on Get API Key, and then click on Get API Key, select your Google Cloud project and then your API key will be generated (if you do not have a Google Cloud account, create one and create a new project)
     Copy the API key and save it
-5. Create a .env file in the root of the directory and paste the copied API key
+5. Create an .env file in the root of the directory and paste the copied API key
 ```
 GEMINI_API_KEY="your_api_key"
 ```
@@ -36,4 +36,4 @@ html code for a signup form with dark background and purple button
 
 react code for a login form 
 ```
-The application works great with HTML code, but may give some rendering errors for react code
+The application works great with HTML code, but may give some rendering errors for react code generated

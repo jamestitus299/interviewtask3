@@ -1,6 +1,6 @@
 # Component Genie -- Componet Generation Application with visualization
 
-Component Genie is basically purposed to generate html/react Components, but can also answer other general question. It might return factually wrong responses. User discretion is advised.
+Component Genie is basically purposed to generate html/react Components with visual rendering, but can also answer other general question. It might return factually wrong responses. User discretion is advised.
 
 # Setup
 

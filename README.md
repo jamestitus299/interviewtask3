@@ -28,4 +28,4 @@ GEMINI_API_KEY="your_api_key"
 reflex init
 reflex run
 ```
-Access the app at http://localhost:3000
+Access the app at http://localhost:3000 (if you are using a dev container like codespaces be sure to forward the ports)

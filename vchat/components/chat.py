@@ -1,6 +1,4 @@
 import reflex as rx
-import reflex_chakra as rc
-
 from vchat.components import loading_icon
 from vchat.app_state import QA, app_state
 from vchat.components.html_canvas import html_render
@@ -145,36 +143,34 @@ def action_bar() -> rx.Component:
     """The action bar to send a new message. Text area for the user"""
     return rx.center(
         rx.vstack(
-            rc.form(
-                rc.form_control(
-                    rx.hstack(
-                        rx.input(
-                            rx.input.slot(
-                                rx.tooltip(
-                                    rx.icon("zap", size=18),
-                                    # content="Enter a question to get a response.",
-                                )
-                            ),
-                            size="3",
-                            placeholder="html/react code... sign up form...",
-                            text_wrap=True,
-                            id="question",
-                            width=["15em", "20em", "45em", "50em", "50em", "50em"],
-                            required=True,
+            rx.form(
+                rx.hstack(
+                    rx.input(
+                        rx.input.slot(
+                            rx.tooltip(
+                                rx.icon("zap", size=18),
+                                # content="Enter a question to get a response.",
+                            )
                         ),
-                        rx.button(
-                            rx.cond(
-                                app_state.processing,
-                                loading_icon(height="1em"),
-                                rx.text("Send"),
-                            ),
-                            type="submit",
-                            disabled=app_state.processing,
-                        ),
-                        align_items="center",
+                        size="3",
+                        placeholder="html/react code... sign up form...",
+                        text_wrap=True,
+                        id="question",
+                        width=["15em", "20em", "45em", "50em", "50em", "50em"],
+                        required=True,
                     ),
-                    is_disabled=app_state.processing,
+                    rx.button(
+                        rx.cond(
+                            app_state.processing,
+                            loading_icon(height="1em"),
+                            rx.text("Send"),
+                        ),
+                        type="submit",
+                        disabled=app_state.processing,
+                    ),
+                    align_items="center",
                 ),
+                is_disabled=app_state.processing,
                 on_submit=app_state.genai_process_question,
                 reset_on_submit=True,
             ),

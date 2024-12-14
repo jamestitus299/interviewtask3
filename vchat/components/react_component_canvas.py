@@ -13,7 +13,7 @@ class LiveProvider(rx.Component):
 
 
 class LivePreview(rx.Component):
-    """React-live component."""
+    """React-live component that shows the live view of the component"""
 
     library = "react-live-runner"
     lib_dependencies: list[str] = ["react", "react-dom"]
@@ -21,7 +21,7 @@ class LivePreview(rx.Component):
 
 
 class LiveEditable(rx.Component):
-    """React-live component."""
+    """React-live component that shows the editable code of the component"""
 
     library = "react-live-runner"
     lib_dependencies: list[str] = ["react", "react-dom"]
@@ -29,53 +29,11 @@ class LiveEditable(rx.Component):
 
 
 class LiveError(rx.Component):
-    """React-live component."""
+    """React-live component that shows the errors"""
 
     library = "react-live-runner"
     lib_dependencies: list[str] = ["react", "react-dom"]
     tag = "LiveError"
-
-
-# class ReactRunner(rx.Component):
-#     """React-live component."""
-
-#     # The name of the npm package.
-#     library = "react-runner"
-
-#     # Any additional libraries needed to use the component.
-#     lib_dependencies: list[str] = []
-
-#     # The name of the component to use from the package.
-#     tag = "Runner"
-
-
-# class React(rx.Component):
-#     """React-live component."""
-
-#     # The name of the npm package.
-#     library = "react"
-
-#     # Any additional libraries needed to use the component.
-#     lib_dependencies: list[str] = []
-
-#     is_default = True
-
-#     # The name of the component to use from the package.
-#     tag = "React"
-
-# class ReactDom(rx.Component):
-#     """React-live component."""
-
-#     # The name of the npm package.
-#     library = "react-dom"
-
-#     # Any additional libraries needed to use the component.
-#     lib_dependencies: list[str] = []
-
-#     # is_default = True
-
-#     # The name of the component to use from the package.
-#     tag = "React"
 
 
 # class Hello(rx.NoSSRComponent):
@@ -113,13 +71,7 @@ def show_react_component(code: str):
     preview = LivePreview.create
     editable = LiveEditable.create
     error = LiveError.create
-    # react = React.create
-    # return rx.container(
-    #     Hello.create(code)
-    #     # ReactRunner.create(code=code)
-    # )
-    # return ReactRunner.create(code=code)
-    # return Hello.create(code=code)
+
     return rx.container(
         rx.dialog.close(
             rx.button("Close", size="2"),
@@ -127,18 +79,18 @@ def show_react_component(code: str):
             top="0",
             left="0",
         ),
-        rx.script(
-            src="https://unpkg.com/react@18/umd/react.production.min.js",
-            cross_origin="anonymous",
-        ),
-        rx.script(
-            src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js",
-            cross_origin="anonymous",
-        ),
-        rx.script(
-            src="https://unpkg.com/@babel/standalone/babel.min.js",
-            cross_origin="anonymous",
-        ),
+        # rx.script(
+        #     src="https://unpkg.com/react@18/umd/react.production.min.js",
+        #     cross_origin="anonymous",
+        # ),
+        # rx.script(
+        #     src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js",
+        #     cross_origin="anonymous",
+        # ),
+        # rx.script(
+        #     src="https://unpkg.com/@babel/standalone/babel.min.js",
+        #     cross_origin="anonymous",
+        # ),
         # rx.scroll_area(
         reactcanvas(
             rx.container(
@@ -153,7 +105,7 @@ def show_react_component(code: str):
                     rx.hstack(
                         rx.scroll_area(
                             editable(),
-                            # background_color="grey",
+                            # background_color="black",
                             type="always",
                             scrollbars="both",
                             # padding="8",

@@ -34,6 +34,13 @@ class LiveError(rx.Component):
     library = "react-live-runner"
     # lib_dependencies: list[str] = ["react", "react-dom", "@babel/standalone", "react-runner", "react-simple-code-editor", "prism-react-renderer", "sucrase"]
     tag = "LiveError"
+    
+class React(rx.Component):
+    """React-live component that shows the errors"""
+
+    library = "react"
+    # lib_dependencies: list[str] = ["react", "react-dom", "@babel/standalone", "react-runner", "react-simple-code-editor", "prism-react-renderer", "sucrase"]
+    tag = "LiveError"
 
 
 # class Hello(rx.NoSSRComponent):

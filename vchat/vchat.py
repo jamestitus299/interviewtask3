@@ -2,9 +2,9 @@
 
 import reflex as rx
 from vchat.components import chat, navbar
+from vchat.components.react_component_canvas import show_react_component
 from vchat.utils.genai_LLM import set_LLM_model
 # from vchat.db.db_tables import create_db
-
 
 def index() -> rx.Component:
     """The main app."""

@@ -73,6 +73,7 @@ def get_desc_code_from_response(text: str) -> List[str]:
     if check_text_for_jsx_code(code):
         code = re.sub(r"```jsx", "", code, flags=re.DOTALL)
         code = re.sub(r"```", "", code, flags=re.DOTALL)
+        code = re.sub(r'import.*?;', '', code, flags=re.DOTALL)
         code = code.strip()
         val = [text, code]
         return val

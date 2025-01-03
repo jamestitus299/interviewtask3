@@ -54,7 +54,7 @@ from typing import Any, Dict, List, Optional
 #     tag = "useState"
 
 
-class Hello(rx.Component):
+class ReactCanvas(rx.Component):
     library = "/public/hello"
     # Any additional libraries needed to use the component.
     lib_dependencies: list[str] = []
@@ -110,7 +110,7 @@ def show_react_component(code: str):
             justify="center",
             margin_bottom="10px",
         ),
-        Hello(code=code),
+        ReactCanvas(code=code),
     )
 
     # return rx.container(

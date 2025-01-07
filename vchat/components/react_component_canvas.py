@@ -54,18 +54,6 @@ from typing import Any, Dict, List, Optional
 #     tag = "useState"
 
 
-class ReactCanvas(rx.Component):
-    library = "/public/hello"
-    # Any additional libraries needed to use the component.
-    lib_dependencies: list[str] = []
-
-    # is_default = True
-
-    # The name of the component to use from the package.
-    tag = "Hello"
-    code: rx.Var[str]
-
-
 # Convenience function to create the component.
 # react = React.create
 # reactcanvas = LiveProvider.create
@@ -76,8 +64,25 @@ class ReactCanvas(rx.Component):
 # hello = ContentRenderer.create
 
 
+class ReactCanvas(rx.Component):
+    library = "/public/react_runner"
+    # Any additional libraries needed to use the component.
+    lib_dependencies: list[str] = []
+
+    # is_default = True
+
+    # The name of the component to use from the package.
+    tag = "ReactRunner"
+    code: rx.Var[str]
+    preview: rx.Var[bool]
+    editor: rx.Var[bool]
+    error: rx.Var[bool]
+
+
 # Component to render react code
-def show_react_component(code: str):
+def show_react_component(
+    code: str, preview: bool = True, editor: bool = True, error: bool = True
+):
     """
         Renders a live preview, editable view of a react component
     args:
@@ -85,158 +90,22 @@ def show_react_component(code: str):
     Returns:
         Component
     """
-    # scope =[jsx]
-    # reactcanvas = LiveProvider.create
-    # preview = LivePreview.create
-    # editable = LiveEditable.create
-    # error = LiveError.create
-
-    # react = Hello.create
-
-    # useState = UseState.create()
-
-    # scope = [useState]
 
     return rx.container(
-        rx.dialog.close(
-            rx.button("Close", size="2"),
-            position="sticky",
-            top="0",
-            left="0",
+        rx.vstack(
+            rx.dialog.close(
+                rx.button("Close", size="2"),
+                position="sticky",
+                top="0",
+                left="0",
+            ),
+            # rx.heading(
+            #     "React Component",
+            #     align="center",
+            #     justify="center",
+            #     margin_bottom="10px",
+            # ),
+            ReactCanvas(code=code, preview=preview, editor=False, error=error),
         ),
-        rx.heading(
-            "React Component",
-            align="center",
-            justify="center",
-            margin_bottom="10px",
-        ),
-        ReactCanvas(code=code),
+        background_color="white",
     )
-
-    # return rx.container(
-    #     rx.dialog.close(
-    #         rx.button("Close", size="2"),
-    #         position="sticky",
-    #         top="0",
-    #         left="0",
-    #     ),
-    #     # rx.script(
-    #     #     src="https://unpkg.com/react@18/umd/react.production.min.js",
-    #     #     cross_origin="anonymous",
-    #     # ),
-    #     # rx.script(
-    #     #     src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js",
-    #     #     cross_origin="anonymous",
-    #     # ),
-    #     # rx.script(
-    #     #     src="https://unpkg.com/@babel/standalone/babel.min.js",
-    #     #     cross_origin="anonymous",
-    #     # ),
-    #     # rx.scroll_area(
-    #     reactcanvas(
-    #         rx.container(
-    #             rx.heading(
-    #                 "React Component",
-    #                 align="center",
-    #                 justify="center",
-    #                 margin_bottom="10px",
-    #             ),
-    #             # rx.spacer(spacing="8"),
-    #             rx.desktop_only(
-    #                 rx.hstack(
-    #                     rx.scroll_area(
-    #                         editable(),
-    #                         # background_color="black",
-    #                         type="always",
-    #                         scrollbars="both",
-    #                         # padding="8",
-    #                         style={"height": "60vh", "width": "90vh"},
-    #                         border_radius=".5em",
-    #                     ),
-    #                     rx.spacer(spacing="6"),
-    #                     rx.scroll_area(
-    #                         preview(),
-    #                         type="always",
-    #                         scrollbars="both",
-    #                         background_color="white",
-    #                         # padding="6",
-    #                         style={"height": "60vh", "width": "90vh"},
-    #                         border_radius="1em",
-    #                     ),
-    #                     # justify="center",
-    #                     # align="center",
-    #                     # max_height="60vh",
-    #                     # min_width="100vh",
-    #                 ),
-    #                 rx.button(
-    #                     "Copy code",
-    #                     on_click=rx.set_clipboard(code),
-    #                     size="1",
-    #                     align="center",
-    #                     justify="center",
-    #                     text_align="center",
-    #                     margin_top="10px",
-    #                 ),
-    #                 rx.text(
-    #                     error(),
-    #                     color_scheme="red",
-    #                     align="center",
-    #                     justify="center",
-    #                 ),
-    #             ),
-    #             rx.mobile_and_tablet(
-    #                 rx.vstack(
-    #                     rx.spacer(spacing="1"),
-    #                     rx.scroll_area(
-    #                         preview(),
-    #                         background_color="white",
-    #                         margin="2",
-    #                         style={"height": "35vh", "width": "25vh"},
-    #                     ),
-    #                     rx.button(
-    #                         "Copy code",
-    #                         on_click=rx.set_clipboard(code),
-    #                         size="1",
-    #                         align="center",
-    #                         justify="center",
-    #                         text_align="center",
-    #                     ),
-    #                     rx.spacer(spacing="2"),
-    #                     rx.text(
-    #                         error(),
-    #                         color_scheme="red",
-    #                         align="center",
-    #                         justify="center",
-    #                         text_wrap="wrap",
-    #                     ),
-    #                     rx.spacer(spacing="2"),
-    #                     rx.scroll_area(
-    #                         editable(),
-    #                         type="always",
-    #                         scrollbars="both",
-    #                         margin="2",
-    #                         style={"height": "35vh", "width": "25vh"},
-    #                         border_radius=".5em",
-    #                     ),
-    #                     justify="center",
-    #                     align="center",
-    #                     # min_width="60vh"
-    #                 ),
-    #                 # rx.spacer(spacing="2"),
-    #             ),
-    #         ),
-    #         code=code,
-    #         scope=scope,
-    #         # reactRunner(code=code)
-    #     ),
-    #     #     type="always",
-    #     #     scrollbars="both",
-    #     #     style={"height": "100%", "width": "100%"},
-    #     #     # width="100%",
-    #     # ),
-    #     # width="100%",
-    #     # style={"height": "auto", "width": "auto"},
-    #     # stack_children_full_width=True,
-    #     # id="jamestitus",
-    #     padding="0px",
-    # )
